@@ -18,11 +18,25 @@ namespace MRCR
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class StartScreen : Window
     {
-        public MainWindow()
+        public StartScreen()
         {
             InitializeComponent();
+        }
+
+        private void Singleplayer_Click(object sender, RoutedEventArgs e)
+        {
+            WorldSchemaChoice wsc = new WorldSchemaChoice();
+            wsc.Owner = this;
+            this.Hide();
+            wsc.ShowDialog();
+            this.Show();
+        }
+
+        private void Multiplayer_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Multiplayer");
         }
     }
 }
