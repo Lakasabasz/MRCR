@@ -6,17 +6,28 @@
         xmlns:local="clr-namespace:MRCR"
         mc:Ignorable="d"
         Title="Wybierz świat" Height="450" Width="800">
-    <Grid Margin="10,10,0,9">
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,386">
-            <Button Content="Otwórz" Width="50"/>
+    <Grid Margin="10,10,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="BtOpen" Content="Otwórz" Width="50" IsEnabled="False" Click="BtOpen_OnClick"/>
             <Separator Background="Transparent" Width="5" />
-            <Button Content="Nowy" Width="50"/>
+            <Button Name="BtNew" Content="Nowy" Width="50" Click="BtNew_OnClick"/>
             <Separator Background="Transparent" Width="5" />
-            <Button Content="Edytuj" Width="50"/>
+            <Button Name="BtEdit" Content="Edytuj" Width="50" IsEnabled="False" Click="BtEdit_OnClick"/>
             <Separator Background="Transparent" Width="5" />
-            <Button Content="Usuń" Width="50"/>
+            <Button Name="BtDelete" Content="Usuń" Width="50" IsEnabled="False" Click="BtDelete_OnClick"/>
         </StackPanel>
-        <ListBox Margin="0,34,0,0"/>
-
+        <ListBox SelectionChanged="LbWorldsList_OnSelectionChanged" Grid.Row="1" Name="LbWorldsList" Margin="0,10,0, 0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Label Content="{Binding Name}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
