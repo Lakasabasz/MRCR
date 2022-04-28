@@ -8,4 +8,10 @@
         <RootNamespace>MRCR</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Update="StartScreen.cs">
+        <DependentUpon>Start Screen.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

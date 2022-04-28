@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace MRCR
 {
@@ -11,69 +7,27 @@ namespace MRCR
     /// </summary>
     public partial class WorldSchemaChoice : Window
     {
-        private string? _selected = null;
+        private OEDWorld _ccWorldSelect;
+        private CreateNewWorld _ccCreateNewWorld;
         public WorldSchemaChoice()
         {
             InitializeComponent();
-
-            List<WorldSchema> worldSchemas = new List<WorldSchema>();
-            try{
-                string[] worlds = Directory.GetFiles(@"Worlds\");
-                foreach (string world in worlds)
-                {
-                    string name = Path.GetFileNameWithoutExtension(world);
-                    WorldSchema ws = new WorldSchema() { Name = name };
-                    worldSchemas.Add(ws);
-                }
-            }
-            catch(IOException E)
-            {
-                Console.WriteLine("[WARNING] Worlds folder not found");
-                Directory.CreateDirectory("Worlds");
-            }
-
-            LbWorldsList.ItemsSource = worldSchemas;
+            _ccWorldSelect = new OEDWorld(this);
+            _ccCreateNewWorld = new CreateNewWorld();
+            ContentControl.Content = _ccWorldSelect;
+            _ccWorldSelect.OEDCreateWorldEvent += new RoutedEventHandler(ContentControl_OnOEDCreateWorldEvent);
+            _ccCreateNewWorld.CancelWorldCreationEvent += new RoutedEventHandler(ContentControl_OnCancelWorldCreationEvent);
         }
 
-        private void LbWorldsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ContentControl_OnOEDCreateWorldEvent(object sender, RoutedEventArgs e)
         {
-            if(LbWorldsList.SelectedIndex != -1)
-            {
-                BtDelete.IsEnabled = true;
-                BtEdit.IsEnabled = true;
-                BtOpen.IsEnabled = true;
-            }
-            else
-            {
-                BtDelete.IsEnabled = false;
-                BtEdit.IsEnabled = false;
-                BtOpen.IsEnabled = false;
-            }
+            ContentControl.Content = _ccCreateNewWorld;
         }
-
-        private void BtOpen_OnClick(object sender, RoutedEventArgs e)
+        
+        private void ContentControl_OnCancelWorldCreationEvent(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            _ccWorldSelect.ReloadWorldList();
+            ContentControl.Content = _ccWorldSelect;
         }
-
-        private void BtNew_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BtEdit_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BtDelete_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class WorldSchema
-    {
-        public string Name { get; set; }
     }
 }

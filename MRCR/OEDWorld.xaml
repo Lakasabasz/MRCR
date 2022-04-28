@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="MRCR.OEDWorld"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MRCR"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="10,10,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="BtOpen" Content="Otwórz" Width="50" IsEnabled="False" Click="BtOpen_OnClick"/>
+            <Separator Background="Transparent" Width="5" />
+            <Button Name="BtNew" Content="Nowy" Width="50" Click="BtNew_OnClick"/>
+            <Separator Background="Transparent" Width="5" />
+            <Button Name="BtEdit" Content="Edytuj" Width="50" IsEnabled="False" Click="BtEdit_OnClick"/>
+            <Separator Background="Transparent" Width="5" />
+            <Button Name="BtDelete" Content="Usuń" Width="50" IsEnabled="False" Click="BtDelete_OnClick"/>
+        </StackPanel>
+        <ListBox SelectionChanged="LbWorldsList_OnSelectionChanged" Grid.Row="1" Name="LbWorldsList" Margin="0,10,0, 0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Label Content="{Binding Name}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
