@@ -10,21 +10,30 @@ public partial class OEDWorld : UserControl
 {
     private Window _parentWindow;
     
-    public static readonly RoutedEvent OEDCreateWorld = EventManager.RegisterRoutedEvent(
-        "OEDCreateWorld",
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(OEDWorld));
-
-    public event RoutedEventHandler OEDCreateWorldEvent
-    {
-        add { AddHandler(OEDCreateWorld, value); }
-        remove { RemoveHandler(OEDCreateWorld, value); }
-    }
+    public static readonly RoutedEvent OEDCreateWorldEvent = EventManager.RegisterRoutedEvent(
+        "OEDCreateWorld", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(OEDWorld));
     
+    public static readonly RoutedEvent OEDBackEvent = EventManager.RegisterRoutedEvent(
+        "OEDBack", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(OEDWorld));
+    
+    public event RoutedEventHandler OEDCreateWorld
+    {
+        add { AddHandler(OEDCreateWorldEvent, value); }
+        remove { RemoveHandler(OEDCreateWorldEvent, value); }
+    }
+    public event RoutedEventHandler OEDBack
+    {
+        add { AddHandler(OEDBackEvent, value); }
+        remove { RemoveHandler(OEDBackEvent, value); }
+    }
     void RaiseOEDCreateWorldEvent()
     {
-        RoutedEventArgs routedEventArgs = new RoutedEventArgs(OEDWorld.OEDCreateWorld);
+        RoutedEventArgs routedEventArgs = new RoutedEventArgs(OEDCreateWorldEvent);
+        RaiseEvent(routedEventArgs);
+    }
+    void RaiseOEDBackEvent()
+    {
+        RoutedEventArgs routedEventArgs = new RoutedEventArgs(OEDBackEvent);
         RaiseEvent(routedEventArgs);
     }
     
@@ -32,9 +41,12 @@ public partial class OEDWorld : UserControl
     {
         InitializeComponent();
         _parentWindow = parentWindow;
+        Loaded += ReloadWorldList;
+    }
+    private void ReloadWorldList(object sender, RoutedEventArgs e)
+    {
         ReloadWorldList();
     }
-    
     private void LbWorldsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if(LbWorldsList.SelectedIndex != -1)
@@ -109,6 +121,11 @@ public partial class OEDWorld : UserControl
         }
 
         LbWorldsList.ItemsSource = worldSchemas;
+    }
+
+    private void Back_OnClick(object sender, RoutedEventArgs e)
+    {
+        RaiseOEDBackEvent();
     }
 }
 

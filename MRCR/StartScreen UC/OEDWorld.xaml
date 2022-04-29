@@ -8,8 +8,9 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Button Name="BtOpen" Content="Otwórz" Width="50" IsEnabled="False" Click="BtOpen_OnClick"/>
@@ -29,5 +30,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Wróć" Click="Back_OnClick" MinWidth="50" Margin="0,5,0,0" />
+        </StackPanel>
     </Grid>
 </UserControl>

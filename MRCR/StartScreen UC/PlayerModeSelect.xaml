@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="MRCR.StartScreen_UC.PlayerModeSelect"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MRCR.StartScreen_UC"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Width="400" Height="300">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.ColumnSpan="2" Content="Jednoosobowy" Margin="0,0,0,10" Click="Singleplayer_OnClick" />
+            <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Wieloosobowy" Margin="0,0,0,10" Click="Multiplayer_OnClick" />
+            <Button Grid.Row="3" Grid.Column="0" Content="Opcje" Margin="0,10,5,0" IsEnabled="False" />
+            <Button Grid.Row="3" Grid.Column="1" Content="Zakończ" Margin="5,10,0,0" Click="Close_OnClick"/>
+        </Grid>
+    </Grid>
+</UserControl>

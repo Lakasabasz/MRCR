@@ -15,7 +15,7 @@ namespace MRCR
             _ccWorldSelect = new OEDWorld(this);
             _ccCreateNewWorld = new CreateNewWorld();
             ContentControl.Content = _ccWorldSelect;
-            _ccWorldSelect.OEDCreateWorldEvent += new RoutedEventHandler(ContentControl_OnOEDCreateWorldEvent);
+            _ccWorldSelect.OEDCreateWorld += new RoutedEventHandler(ContentControl_OnOEDCreateWorldEvent);
             _ccCreateNewWorld.CancelWorldCreationEvent += new RoutedEventHandler(ContentControl_OnCancelWorldCreationEvent);
         }
 

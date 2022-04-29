@@ -11,10 +11,7 @@ namespace MRCR;
 public partial class CreateNewWorld : UserControl
 {
     private static readonly RoutedEvent CancelWorldCreation = EventManager.RegisterRoutedEvent(
-        "CancelWorldCreation",
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(CreateNewWorld));
+        "CancelWorldCreation", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CreateNewWorld));
     
     public event RoutedEventHandler CancelWorldCreationEvent
     {
