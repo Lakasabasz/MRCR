@@ -5,8 +5,68 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:MRCR"
         mc:Ignorable="d"
-        Title="Editor" Height="450" Width="800">
+        Title="Editor" Height="750" Width="1000">
     <Grid>
-        <Label FontSize="36" Name="WorldPath"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="22.5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.ColumnSpan="3">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_Plik">
+                    <MenuItem Header="Zapis" />
+                    <MenuItem Header="Zamknij" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Label Background="#aaa" Content="Panel wyboru Stacji/Linii"/>
+            <Label Grid.Row="1" Background="Gray" Content="Panel narzędzi zależnych od&#x0a;wybranej karty"/>
+        </Grid>
+        <Label Grid.Column="2" Grid.Row="1" Background="Gray" Content="Panel właściwości zaznaczonych&#x0a;obiektów"/>
+        <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Background="LightGray" TabStripPlacement="Bottom">
+            <TabItem Header="Organizacja">
+                <TabItem.Content>
+                    <Label Content="Organizacja"></Label>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Szlak">
+                <TabItem.Content>
+                    <Label Content="Projektowanie szlaków" />
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Schemat posterunku">
+                <TabItem.Content>
+                    <Label Content="Schemat posterunku" />
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Warunki fizyczne">
+                <TabItem.Content>
+                    <Label Content="Warunki fizyczne" />
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Zależności">
+                <TabItem.Content>
+                    <Label Content="Zależności" />
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Rozkład">
+                <TabItem.Content>
+                    <Label Content="Rozkład" />
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+        <Label Grid.Row="2" FontSize="10" Background="LightGray" Content="Linia nr 1 > Szlak z Kaktusowa do Jaworowa"/>
+        <Label Grid.Row="2" Grid.Column="2" FontSize="10" Background="LightGray" Content="Plik zapisany" />
     </Grid>
 </Window>

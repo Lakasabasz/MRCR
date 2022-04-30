@@ -10,6 +10,7 @@ namespace MRCR;
 
 public partial class CreateNewWorld : UserControl
 {
+    private Window _parrent;
     private static readonly RoutedEvent CancelWorldCreation = EventManager.RegisterRoutedEvent(
         "CancelWorldCreation", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CreateNewWorld));
     
@@ -25,9 +26,10 @@ public partial class CreateNewWorld : UserControl
         RaiseEvent(newEventArgs);
     }
     
-    public CreateNewWorld()
+    public CreateNewWorld(Window parrent)
     {
         InitializeComponent();
+        _parrent = parrent;
     }
 
     private void WorldName_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -49,7 +51,10 @@ public partial class CreateNewWorld : UserControl
             string json = JsonSerializer.Serialize(newWorld);
             UnicodeEncoding unicode = new UnicodeEncoding();
             world.Write(unicode.GetBytes(json), 0, unicode.GetByteCount(json));
-            MessageBox.Show("Utworzono nowy świat!", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+            _parrent.Hide();
+            Editor editor = new Editor(Config.WorldDirectoryPath + WorldName.Text + Config.WorldFileExtension);
+            editor.ShowDialog();
+            _parrent.Show();
             RaiseCancelWorldCreationEvent();
         }
         catch (ArgumentException)

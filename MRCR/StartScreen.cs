@@ -53,7 +53,7 @@ namespace MRCR
         {
             if(_createNewWorld == null)
             {
-                _createNewWorld = new CreateNewWorld();
+                _createNewWorld = new CreateNewWorld(this);
                 _createNewWorld.CancelWorldCreationEvent += Back_Click;
             }
             if(_oedWorld == null)
