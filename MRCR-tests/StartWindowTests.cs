@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -20,7 +21,7 @@ public class StartWindowTests
     {
     }
     
-    [TearDown]
+    [TearDown, ExcludeFromCodeCoverage]
     public void CleanUp()
     {
         try
