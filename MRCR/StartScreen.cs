@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace MRCR
             WindowContent.Content = _playerModeSelect;
             _playerModeSelect.SingleplayerChoose += Singleplayer_Click;
             _playerModeSelect.MultiplayerChoose += Multiplayer_Click;
+            Console.WriteLine("[INFO] StartScreen initialized");
         }
 
         private void Singleplayer_Click(object sender, RoutedEventArgs e)

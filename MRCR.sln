@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRCR", "MRCR\MRCR.csproj", "{F100C7F1-28CE-42AF-B063-D3D226D56EA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRCR-tests", "MRCR-tests\MRCR-tests.csproj", "{1376A25B-4179-455F-84F3-27A459504A0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{F100C7F1-28CE-42AF-B063-D3D226D56EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F100C7F1-28CE-42AF-B063-D3D226D56EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F100C7F1-28CE-42AF-B063-D3D226D56EA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1376A25B-4179-455F-84F3-27A459504A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1376A25B-4179-455F-84F3-27A459504A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1376A25B-4179-455F-84F3-27A459504A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1376A25B-4179-455F-84F3-27A459504A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -31,7 +31,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Wróć" Click="Back_OnClick" MinWidth="50" Margin="0,5,0,0" />
+            <Button Content="Wróć" Name="BtBack" Click="Back_OnClick" MinWidth="50" Margin="0,5,0,0" />
         </StackPanel>
     </Grid>
 </UserControl>

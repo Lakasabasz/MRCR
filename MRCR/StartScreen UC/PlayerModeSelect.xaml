@@ -18,8 +18,8 @@
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button Grid.ColumnSpan="2" Content="Jednoosobowy" Margin="0,0,0,10" Click="Singleplayer_OnClick" />
-            <Button Grid.Row="1" Grid.ColumnSpan="2" Content="Wieloosobowy" Margin="0,0,0,10" Click="Multiplayer_OnClick" />
+            <Button Name="SingleplayerButton" Grid.ColumnSpan="2" Content="Jednoosobowy" Margin="0,0,0,10" Click="Singleplayer_OnClick" />
+            <Button Name="MultiplayerButton" Grid.Row="1" Grid.ColumnSpan="2" Content="Wieloosobowy" Margin="0,0,0,10" Click="Multiplayer_OnClick" />
             <Button Grid.Row="3" Grid.Column="0" Content="Opcje" Margin="0,10,5,0" IsEnabled="False" />
             <Button Grid.Row="3" Grid.Column="1" Content="Zakończ" Margin="5,10,0,0" Click="Close_OnClick"/>
         </Grid>

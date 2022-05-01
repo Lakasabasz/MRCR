@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using MRCR.services;
 
 namespace MRCR;
 
@@ -12,9 +14,10 @@ public partial class OEDWorld : UserControl
     
     public static readonly RoutedEvent OEDCreateWorldEvent = EventManager.RegisterRoutedEvent(
         "OEDCreateWorld", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(OEDWorld));
-    
     public static readonly RoutedEvent OEDBackEvent = EventManager.RegisterRoutedEvent(
         "OEDBack", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(OEDWorld));
+    
+    internal static IFactoryWindow FactoryWindow = new FactoryWindow();
     
     public event RoutedEventHandler OEDCreateWorld
     {
@@ -42,6 +45,7 @@ public partial class OEDWorld : UserControl
         InitializeComponent();
         _parentWindow = parentWindow;
         Loaded += ReloadWorldList;
+        ReloadWorldList();
     }
     private void ReloadWorldList(object sender, RoutedEventArgs e)
     {
@@ -77,9 +81,8 @@ public partial class OEDWorld : UserControl
     {
         WorldSchema? ws = LbWorldsList.SelectedItem as WorldSchema;
         if (ws == null) return;
-        Editor editorScreen = new Editor(Config.WorldDirectoryPath + ws.Name + Config.WorldFileExtension);
         _parentWindow.Hide();
-        editorScreen.ShowDialog();
+        FactoryWindow.DisplayEditorWindow(Config.WorldDirectoryPath + ws.Name + Config.WorldFileExtension);
         _parentWindow.Show();
     }
 
@@ -104,8 +107,11 @@ public partial class OEDWorld : UserControl
 
     public void ReloadWorldList()
     {
+        Console.WriteLine("[DEBUG] Reloading world list");
         List<WorldSchema> worldSchemas = new List<WorldSchema>();
-        try{
+        try
+        {
+            if (!Directory.Exists(Config.WorldDirectoryPath)) throw new IOException();
             string[] worlds = Directory.GetFiles(Config.WorldDirectoryPath, "*" + Config.WorldFileExtension);
             foreach (string world in worlds)
             {
