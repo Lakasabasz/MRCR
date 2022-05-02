@@ -14,4 +14,63 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="icons" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="icons\all-directions.png" />
+      <Resource Include="icons\all-directions.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\close.png" />
+      <Resource Include="icons\close.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\graph.png" />
+      <Resource Include="icons\graph.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\lcs-area.png" />
+      <Resource Include="icons\lcs-area.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\line-map.png" />
+      <Resource Include="icons\line-map.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\merge.png" />
+      <Resource Include="icons\merge.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\merge(1).png" />
+      <Resource Include="icons\merge(1).png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\plug.png" />
+      <Resource Include="icons\plug.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\railway-station.png" />
+      <Resource Include="icons\railway-station.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\select.png" />
+      <Resource Include="icons\select.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\train.png" />
+      <Resource Include="icons\train.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\train-depot.png" />
+      <Resource Include="icons\train-depot.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\train-station.png" />
+      <Resource Include="icons\train-station.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
 </Project>

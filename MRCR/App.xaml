@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:MRCR"
              StartupUri="Start Screen.xaml">
     <Application.Resources>
-         
+        
     </Application.Resources>
 </Application>

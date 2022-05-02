@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="MRCR.Editor_UC.ToolSetOrganizacja"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MRCR.Editor_UC"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Orientation="Vertical">
+        <WrapPanel ItemHeight="30" ItemWidth="30">
+            <ToggleButton Name="BtAddPost" ToolTip="Dodaj posterunek" Margin="0,0,5,5"><Image Source="../icons/train-station.png"/></ToggleButton>
+            <ToggleButton Name="BtAddDepot" ToolTip="Dodaj lokomotywownię" Margin="0,0,5,5"><Image Source="../icons/train-depot.png" /></ToggleButton>
+            <ToggleButton Name="BtAddStationDepot" ToolTip="Dodaj stację z lokomotywownią" Margin="0,0,5,5"><Image Source="../icons/railway-station.png" /></ToggleButton>
+            <Button Name="BtAddLine" ToolTip="Utwórz linię kolejową" Margin="0,0,5,5"><Image Source="../icons/line-map.png" /></Button>
+            <Button Name="BtAddLCS" ToolTip="Utwórz LCS" Margin="0,0,5,5"><Image Source="../icons/lcs-area.png" /></Button>
+            <ToggleButton Name="BtMove" ToolTip="Przesuń" Margin="0,0,5,5"><Image Source="../icons/all-directions.png" /></ToggleButton>
+            <ToggleButton Name="BtSelect" ToolTip="Zaznacz" Margin="0,0,5,5"><Image Source="../icons/select.png" /></ToggleButton>
+            <ToggleButton Name="BtDelete" ToolTip="Usuń" Margin="0,0,5,5"><Image Source="../icons/close.png"/> </ToggleButton>
+            <ToggleButton Name="BtConnect" ToolTip="Połącz szlakiem" Margin="0,0,5,5"><Image Source="../icons/plug.png" /></ToggleButton>
+            <ToggleButton Name="BtMerge" ToolTip="Dołącz do istniejącej linii/LCS-a" Margin="0,0,5,5"><Image Source="../icons/merge.png" /></ToggleButton>
+            <Button Name="BtExclude" ToolTip="Oddziel od istniejącej linii/LCS-a" Margin="0,0,5,5"><Image Source="../icons/merge(1).png" /></Button>
+        </WrapPanel>
+        <Separator></Separator>
+        <WrapPanel Name="SWpSelect" ItemHeight="30" ItemWidth="30" Visibility="Collapsed">
+            <ToggleButton Name="SBtSelectObject" ToolTip="Zaznacz posterunek" Margin="0,5,5,0"><Image Source="../icons/train.png" /></ToggleButton>
+            <ToggleButton Name="SBtSelectTrail" ToolTip="Zaznacz szlak" Margin="0,5,5,0"><Image Source="../icons/plug.png" /></ToggleButton>
+            <ToggleButton Name="SBtSelectLine" ToolTip="Zaznacz linię" Margin="0,5,5,0"><Image Source="../icons/graph.png" /></ToggleButton>
+            <ToggleButton Name="SBtSelectLCS" ToolTip="Zaznacz obszar LCS-a" Margin="0,5,5,0"><Image Source="../icons/select.png" /></ToggleButton>
+        </WrapPanel>
+        <WrapPanel Name="SWpDelete" ItemHeight="30" ItemWidth="30" Visibility="Collapsed">
+            <ToggleButton Name="SBtDeleteObject" ToolTip="Usuń posterunek" Margin="0,5,5,0"><Image Source="../icons/train.png" /></ToggleButton>
+            <ToggleButton Name="SBtDeleteTrail" ToolTip="Usuń szlak" Margin="0,5,5,0"><Image Source="../icons/plug.png" /></ToggleButton>
+            <ToggleButton Name="SBtDeleteLine" ToolTip="Usuń linię" Margin="0,5,5,0"><Image Source="../icons/graph.png" /></ToggleButton>
+            <ToggleButton Name="SBtDeleteLCS" ToolTip="Usuń LCS-a" Margin="0,5,5,0"><Image Source="../icons/select.png" /></ToggleButton>
+        </WrapPanel>
+    </StackPanel>
+</UserControl>

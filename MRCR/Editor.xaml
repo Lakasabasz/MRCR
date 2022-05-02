@@ -23,6 +23,9 @@
                     <MenuItem Header="Zapis" />
                     <MenuItem Header="Zamknij" />
                 </MenuItem>
+                <MenuItem Header="Pomoc">
+                    <MenuItem Header="O programie" />
+                </MenuItem>
             </Menu>
         </DockPanel>
         <Grid Grid.Row="1">
@@ -36,48 +39,72 @@
                         <Setter Property="Background" Value="White" />
                     </Style>
                 </TabControl.Resources>
-                <TabItem Header="Szkalki/posterunki" />
-                <TabItem Header="Linie" />
-                <TabItem Header="LCS" />
+                <TabItem Name="TiTreeSzlakPost" Header="Szkalki/posterunki">
+                    <TabItem.Content>
+                        <TreeView Name="TreeSzlakPost"/>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem Name="TiTreeLines" Header="Linie">
+                    <TabItem.Content>
+                        <TreeView Name="TreeLines"/>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem Name="TiTreeLCS" Header="LCS">
+                    <TabItem.Content>
+                        <TreeView Name="TreeLCS"/>
+                    </TabItem.Content>
+                </TabItem>
             </TabControl>
             <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0.5">
-                <WrapPanel ItemHeight="25" ItemWidth="25" />
+                <ContentControl Name="ContentToolBar" Margin="5,0,0,0"/>
             </Border>
         </Grid>
-        <Label Grid.Column="2" Grid.Row="1" Background="Gray" Content="Panel właściwości zaznaczonych&#x0a;obiektów"/>
+        <StackPanel Grid.Column="2" Grid.Row="1" Name="SpSoProperties" />
         <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" TabStripPlacement="Bottom">
-            <TabItem Header="Organizacja">
+            <TabItem Name="TiOrganizacja" Header="Organizacja">
                 <TabItem.Content>
-                    <Canvas></Canvas>
+                    <Canvas Name="OrganizationMap"/>
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Szlak">
+            <TabItem Name="TiSzlak" Header="Szlak" IsEnabled="False">
                 <TabItem.Content>
                     <Label Content="Projektowanie szlaków" />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Schemat posterunku">
+            <TabItem Name="TiSchem" Header="Schemat posterunku" IsEnabled="False">
                 <TabItem.Content>
                     <Label Content="Schemat posterunku" />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Warunki fizyczne">
+            <TabItem Name="TiFiz" Header="Warunki fizyczne" IsEnabled="False">
                 <TabItem.Content>
                     <Label Content="Warunki fizyczne" />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Zależności">
+            <TabItem Name="TiDepend" Header="Zależności" IsEnabled="False">
                 <TabItem.Content>
                     <Label Content="Zależności" />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Rozkład">
+            <TabItem Name="TiRoz" Header="Rozkład">
                 <TabItem.Content>
                     <Label Content="Rozkład" />
                 </TabItem.Content>
             </TabItem>
         </TabControl>
-        <Label Grid.Row="2" FontSize="10" Background="LightGray" Content="Linia nr 1 > Szlak z Kaktusowa do Jaworowa"/>
-        <Label Grid.Row="2" Grid.Column="2" FontSize="10" Background="LightGray" Content="Plik zapisany" />
+        <DockPanel Grid.Row="2">
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem>
+                    <TextBlock Name="DependencyPath" />
+                </StatusBarItem>
+            </StatusBar>
+        </DockPanel>
+        <DockPanel Grid.Column="2" Grid.Row="2">
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem>
+                    <TextBlock Name="State" Text="Gotowy" />
+                </StatusBarItem>
+            </StatusBar>
+        </DockPanel>
     </Grid>
 </Window>
