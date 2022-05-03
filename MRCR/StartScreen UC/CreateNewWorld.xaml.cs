@@ -49,12 +49,8 @@ public partial class CreateNewWorld : UserControl
     {
         try
         {
-            FileStream world = File.Create(Config.WorldDirectoryPath + WorldName.Text + Config.WorldFileExtension);
-            World newWorld = new World{Name = WorldName.Text};;
-            string json = JsonSerializer.Serialize(newWorld);
-            UnicodeEncoding unicode = new UnicodeEncoding();
-            world.Write(unicode.GetBytes(json), 0, unicode.GetByteCount(json));
-            world.Close();
+            World newWorld = new World(WorldName.Text);
+            newWorld.Save(Config.WorldDirectoryPath + WorldName.Text + Config.WorldFileExtension);
             _parrent.Hide();
             FactoryWindow.DisplayEditorWindow(Config.WorldDirectoryPath + WorldName.Text + Config.WorldFileExtension);
             _parrent.Show();

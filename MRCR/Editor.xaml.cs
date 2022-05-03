@@ -20,4 +20,9 @@ public partial class Editor : Window
     {
         throw new System.NotImplementedException();
     }
+
+    public void CanvasRelease(Point point)
+    {
+        throw new System.NotImplementedException();
+    }
 }

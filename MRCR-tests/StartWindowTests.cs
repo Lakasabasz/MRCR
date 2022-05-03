@@ -10,7 +10,6 @@ using MRCR.datastructures;
 using MRCR.services;
 using MRCR.StartScreen_UC;
 using NUnit.Framework;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace MRCR_tests;
 
@@ -120,11 +119,8 @@ public class StartWindowTests
         PlayerModeSelect? c = (PlayerModeSelect) ss.WindowContent.Content;
         c.SingleplayerButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         OEDWorld? oedWorld = (OEDWorld) ss.WindowContent.Content;
-        FileStream fs = File.Create(Config.WorldDirectoryPath + "TestWorld" + Config.WorldFileExtension);
-        World w = new World { Name = "TestWorld" };
-        UnicodeEncoding unicode = new UnicodeEncoding();
-        fs.Write(unicode.GetBytes(JsonSerializer.Serialize(w)), 0, unicode.GetByteCount(JsonSerializer.Serialize(w)));
-        fs.Close();
+        World w = new World("TestWorld");
+        w.Save(Config.WorldDirectoryPath + "TestWorld" + Config.WorldFileExtension);
         oedWorld.ReloadWorldList();
         Assert.IsNotEmpty(oedWorld.LbWorldsList.Items);
     }
@@ -137,11 +133,9 @@ public class StartWindowTests
         PlayerModeSelect? c = (PlayerModeSelect) ss.WindowContent.Content;
         c.SingleplayerButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         OEDWorld? oedWorld = (OEDWorld) ss.WindowContent.Content;
-        World w = new() {Name="TestWorld"};
+        World w = new("TestWorld");
+        w.Save(Config.WorldDirectoryPath + "TestWorld" + Config.WorldFileExtension);
         UnicodeEncoding unicode = new UnicodeEncoding();
-        FileStream fs = File.Create(Config.WorldDirectoryPath + "TestWorld" + Config.WorldFileExtension);
-        fs.Write(unicode.GetBytes(JsonSerializer.Serialize(w)), 0, unicode.GetByteCount(JsonSerializer.Serialize(w)));
-        fs.Close();
         oedWorld.ReloadWorldList();
         oedWorld.LbWorldsList.SelectedIndex = 0;
         Assert.IsTrue(oedWorld.BtOpen.IsEnabled);
@@ -160,11 +154,9 @@ public class StartWindowTests
         PlayerModeSelect? c = (PlayerModeSelect) ss.WindowContent.Content;
         c.SingleplayerButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         OEDWorld? oedWorld = (OEDWorld) ss.WindowContent.Content;
-        World w = new() {Name="TestWorld"};
+        World w = new("TestWorld");
+        w.Save(Config.WorldDirectoryPath + "TestWorld" + Config.WorldFileExtension);
         UnicodeEncoding unicode = new UnicodeEncoding();
-        FileStream fs = File.Create(Config.WorldDirectoryPath + "TestWorld" + Config.WorldFileExtension);
-        fs.Write(unicode.GetBytes(JsonSerializer.Serialize(w)), 0, unicode.GetByteCount(JsonSerializer.Serialize(w)));
-        fs.Close();
         oedWorld.ReloadWorldList();
         oedWorld.LbWorldsList.SelectedIndex = 0;
         oedWorld.BtDelete.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));

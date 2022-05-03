@@ -3,12 +3,28 @@ using System.Collections.Generic;
 
 namespace MRCR.datastructures;
 
-public class ControlPlace
+public interface IControlPlace {}
+
+public class ControlRoom : IControlPlace
 {
-    public int PostReference {get;set;}
+    private Post _post;
+    private string _name;
+    
+    public ControlRoom(Post post, string name)
+    {
+        _name = name;
+        _post = post;
+    }
 }
 
-public class LCS : ControlPlace
+public class LCS : IControlPlace
 {
-    public List<int> PostsReference {get;set;}
+    private List<Post> _posts;
+    private string _name;
+    
+    public LCS(List<Post> posts, string name)
+    {
+        _name = name;
+        _posts = posts;
+    }
 }

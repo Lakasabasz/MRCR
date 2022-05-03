@@ -10,6 +10,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MRCR;
 using MRCR.datastructures;
+using MRCR.datastructures.serializable;
 using MRCR.Editor_UC;
 using NUnit.Framework;
 
@@ -28,12 +29,8 @@ public class EditorWindowTests
             Directory.CreateDirectory(Config.WorldDirectoryPath);
         }
 
-        World world = new World { Name = $"WorldFile {_lastFileID}" };
-        FileStream fs = File.Create(filename);
-        UnicodeEncoding unicode = new UnicodeEncoding();
-        fs.Write(unicode.GetBytes(JsonSerializer.Serialize(world)), 0,
-            unicode.GetByteCount(JsonSerializer.Serialize(world)));
-        fs.Close();
+        World world = new World($"WorldFile {_lastFileID}");
+        world.Save(filename);
         return filename;
     }
 
@@ -92,15 +89,13 @@ public class EditorWindowTests
         Editor editor = new Editor(filename);
         ToolSetOrganizacja? tso = editor.ContentToolBar.Content as ToolSetOrganizacja;
         tso.BtAddPost.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-        editor.CanvasPress(new Point(5, 5));
-        Assert.IsNotEmpty(editor.World.Posts);
+        editor.CanvasRelease(new Point(5, 5));
+        SerializableGraph sg = JsonSerializer.Deserialize<SerializableGraph>(editor.World.Serialize());
+        Assert.IsNotEmpty(sg.vertices);
         Assert.IsNotEmpty(editor.TreeSzlakPost.Items);
         Assert.AreEqual(1, editor.TreeSzlakPost.Items.Count);
-        Assert.IsNotEmpty(editor.TreeLines.Items);
-        TreeViewItem? treeItem = editor.TreeLines.Items[0] as TreeViewItem;
-        Assert.IsNotNull(treeItem);
-        Assert.IsTrue(treeItem.IsExpanded);
-        Assert.IsNotNull(treeItem.Items);
+        Assert.IsNotNull(sg.subgraphs);
+
         Assert.IsNotEmpty(editor.TreeLCS.Items);
         TreeViewItem? treeItemLCS = editor.TreeLCS.Items[0] as TreeViewItem;
         Assert.IsNotNull(treeItemLCS);
