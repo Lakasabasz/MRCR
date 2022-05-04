@@ -12,6 +12,18 @@ public class Line
     {
         throw new NotImplementedException();
     }
+    public List<Post> GetPosts()
+    {
+        return _posts;
+    }
 
-    public List<int> PostsReference { get; set; }
+    public string GetName()
+    {
+        return _name;
+    }
+
+    public void AddPostAfter(Post p4)
+    {
+        throw new NotImplementedException();
+    }
 }

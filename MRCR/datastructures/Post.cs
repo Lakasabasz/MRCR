@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using MRCR.datastructures.serializable;
 
 namespace MRCR.datastructures;
 
 public enum PostType
 {
-    Post, Depot, Combined
+    Post = 0,
+    Depot = 1,
+    Combined = 2
 }
 public class Post
 {
     private string _name;
     private PostType _type;
     private List<Trail> _trails;
+    private Point _location;
 
     public Post(string name, int type)
     {
@@ -66,5 +71,10 @@ public class Post
         }
 
         return false;
+    }
+
+    public Vertex ToVertex()
+    {
+        return new Vertex(_name, (int)_type, (int)_location.X, (int)_location.Y);
     }
 }

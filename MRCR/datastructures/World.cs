@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using MRCR.datastructures.serializable;
 
@@ -12,7 +13,7 @@ public class World : IValidable
 {
     private string _name;
     private List<Post> _posts;
-    private TriangleMatrix<Trail?> _neighborsMatrix;
+    private NeighbourMatrix _neighborsMatrix;
     private List<Line> _lines;
     private List<IControlPlace> _controlPlaces;
 
@@ -20,14 +21,22 @@ public class World : IValidable
     {
         _name = name;
         _posts = new List<Post>();
-        _neighborsMatrix = new TriangleMatrix<Trail?>();
+        _neighborsMatrix = new NeighbourMatrix();
         _lines = new List<Line>();
         _controlPlaces = new List<IControlPlace>();
     }
 
     private World(string name, List<Post> posts, List<Trail> trails, List<Line> lines, List<IControlPlace> controlPlaces)
     {
-        throw new NotImplementedException();
+        _name = name;
+        _posts = posts;
+        _lines = lines;
+        _controlPlaces = controlPlaces;
+        _neighborsMatrix = new NeighbourMatrix(_posts);
+        foreach (Trail trail in trails)
+        {
+            _neighborsMatrix[trail.GetPosts()[0], trail.GetPosts()[1]] = trail;
+        }
     }
 
     public static World Load(string worldPath)
@@ -96,15 +105,89 @@ public class World : IValidable
         World world = new World(sg.name, posts, trails, lines, controlPlaces);
         return world;
     }
-    public string Save(string? filename)
+    public void Save(string? filename)
     {
-        throw new NotImplementedException();
+        UTF8Encoding utf8 = new UTF8Encoding(true);
+        string json = Serialize();
+        filename ??= Config.WorldDirectoryPath + _name + Config.WorldFileExtension;
+        FileStream file;
+        if (File.Exists(filename))
+        {
+            file = File.Open(filename, FileMode.Truncate);
+        }
+        else
+        {
+            file = File.Create(filename);
+        }
+        file.Write(utf8.GetBytes(json), 0, utf8.GetByteCount(json));
+        file.Close();
     }
     public string Serialize()
     {
-        throw new NotImplementedException();
+        List<Vertex> vertices = new List<Vertex>();
+        Dictionary<Post, int> postIds = new Dictionary<Post, int>();
+        foreach (Post p in _posts)
+        {
+            vertices.Add(p.ToVertex());
+            postIds.Add(p, vertices[^1].Id);
+        }
+        
+        List<Edge> edges = new List<Edge>();
+        List<Trail> trails = _neighborsMatrix.GetTrailsList();
+        foreach (Trail t in trails)
+        {
+            edges.Add(new Edge{V1 = postIds[t.GetPosts()[0]], V2 = postIds[t.GetPosts()[1]]});;
+        }
+        
+        List<NamedTree> lines = new List<NamedTree>();
+        foreach (Line line in _lines)
+        {
+            List<int> lineVertices = new List<int>();
+            foreach (Post p in line.GetPosts())
+            {
+                lineVertices.Add(postIds[p]);
+            }
+            NamedTree nt = new NamedTree{Name = line.GetName(), Tree = lineVertices};
+            lines.Add(nt);
+        }
+        
+        List<NamedSubgraph> subgraphs = new List<NamedSubgraph>();
+        foreach (IControlPlace controlPlace in _controlPlaces)
+        {
+            List<Post> controlPlacePosts = controlPlace.GetPosts();
+            List<int> controlPlaceVertices = new List<int>();
+            foreach (Post p in controlPlacePosts)
+            {
+                controlPlaceVertices.Add(postIds[p]);
+            }
+
+            NamedSubgraph ns = new NamedSubgraph { Name = controlPlace.GetName(), Verices = controlPlaceVertices };
+            subgraphs.Add(ns);
+        }
+        SerializableGraph sg = new SerializableGraph { name = _name, vertices = vertices, edges = edges, lines = lines, subgraphs = subgraphs };
+        return JsonSerializer.Serialize(sg);
     }
     public bool IsValid()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Post AddPost(int x, int y, PostType type)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Connect(Post p1, Post p2)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Line CreateLine(List<Post> posts)
+    {
+        throw new NotImplementedException();
+    }
+
+    public LCS CreateLCS(List<Post> posts)
     {
         throw new NotImplementedException();
     }

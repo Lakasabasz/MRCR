@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace MRCR.datastructures.serializable;
 
@@ -13,11 +14,16 @@ public class Vertex
     
     public Vertex(){} // From deserialization
 
-    public Vertex(string name, int type)
+    public Vertex(string name, int type, int x, int y)
     {
         Id = _lastId;
         _lastId++;
         Name = name;
         Type = type;
+        X = x;
+        Y = y;
     }
+
+    public int Y { get; set; }
+    public int X { get; set; }
 }

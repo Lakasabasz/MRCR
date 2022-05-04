@@ -3,7 +3,11 @@ using System.Collections.Generic;
 
 namespace MRCR.datastructures;
 
-public interface IControlPlace {}
+public interface IControlPlace
+{
+    List<Post> GetPosts();
+    string GetName();
+}
 
 public class ControlRoom : IControlPlace
 {
@@ -14,6 +18,14 @@ public class ControlRoom : IControlPlace
     {
         _name = name;
         _post = post;
+    }
+    public List<Post> GetPosts()
+    {
+        return new List<Post>{ _post };
+    }
+    public string GetName()
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -26,5 +38,20 @@ public class LCS : IControlPlace
     {
         _name = name;
         _posts = posts;
+    }
+
+    public List<Post> GetPosts()
+    {
+        return _posts;
+    }
+
+    public string GetName()
+    {
+        return _name;
+    }
+
+    public void AddPost(Post p3)
+    {
+        throw new NotImplementedException();
     }
 }
