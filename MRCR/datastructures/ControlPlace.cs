@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace MRCR.datastructures;
 
@@ -25,7 +27,7 @@ public class ControlRoom : IControlPlace
     }
     public string GetName()
     {
-        throw new NotImplementedException();
+        return _name;
     }
 }
 
@@ -33,11 +35,23 @@ public class LCS : IControlPlace
 {
     private List<Post> _posts;
     private string _name;
+    private NeighbourMatrix _neighbourMatrix;
+    private World? _world = null;
+    private static int _namelessCounter = 1;
     
     public LCS(List<Post> posts, string name)
     {
         _name = name;
         _posts = posts;
+        _neighbourMatrix = new NeighbourMatrix(posts);
+    }
+    public LCS(List<Post> posts, NeighbourMatrix neighbours, World world, string? name = null)
+    {
+        name ??= $"LCS {_namelessCounter++}";
+        _name = name;
+        _posts = posts;
+        _neighbourMatrix = neighbours;
+        _world = world;
     }
 
     public List<Post> GetPosts()
@@ -50,8 +64,31 @@ public class LCS : IControlPlace
         return _name;
     }
 
-    public void AddPost(Post p3)
+    public void AddPost(Post post)
     {
-        throw new NotImplementedException();
+        Dictionary<Post, Trail?> trails = new();
+        foreach (Post neighbour in _posts)
+        {
+            trails.Add(neighbour, neighbour.GetTrailContaining(post));
+        }
+        if (trails.Count(x => x.Value != null) == 0)
+        {
+            throw new Exception("Post is not connected to any other posts");
+        }
+
+        _world.ExpandLCS(this, post);
+        _posts.Add(post);
+        _neighbourMatrix.AddPost(post);
+        _neighbourMatrix[post] = trails;
+    }
+
+    public bool ContainsAnyOf(List<Post> posts)
+    {
+        return _posts.Any(x => posts.Contains(x));
+    }
+
+    public void SetWorld(World world)
+    {
+        _world = world;
     }
 }

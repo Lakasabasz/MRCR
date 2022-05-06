@@ -4,9 +4,9 @@ namespace MRCR.datastructures.serializable;
 
 public class SerializableGraph
 {
-    public string name;
-    public List<Vertex> vertices = new();
-    public List<Edge> edges = new();
-    public List<NamedTree> lines = new();
-    public List<NamedSubgraph> subgraphs = new();
+    public string name { get; set; }
+    public List<Vertex> vertices { get; set; }
+    public List<Edge> edges { get; set; }
+    public List<NamedTree> lines { get; set; }
+    public List<NamedSubgraph> subgraphs { get; set; }
 }

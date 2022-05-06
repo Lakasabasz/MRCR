@@ -4,6 +4,6 @@ namespace MRCR.datastructures.serializable;
 
 public class NamedSubgraph
 {
-    public string Name;
-    public List<int> Verices;
+    public string Name {get;set;}
+    public List<int> Verices {get;set;}
 }

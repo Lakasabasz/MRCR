@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using MRCR.datastructures;
 using MRCR.datastructures.serializable;
@@ -41,6 +42,8 @@ public class WorldDataStructuresTests
         lcs.AddPost(p3);
         Directory.CreateDirectory("test_data");
         string serialized = w.Serialize();
+        w.Save("test_data/TestWorld.json");
+        Assert.Greater(serialized.Length, 460);
         SerializableGraph sg = JsonSerializer.Deserialize<SerializableGraph>(serialized);
 
         {
@@ -98,21 +101,21 @@ public class WorldDataStructuresTests
                 Assert.IsTrue(expectedEdges[e]);
             }
         
-            Assert.AreEqual(3, sg.lines.Count);
+            Assert.AreEqual(2, sg.lines.Count);
             Dictionary<NamedTree, bool> expectedLines = new Dictionary<NamedTree, bool>();
-            expectedLines.Add(new NamedTree{Name = "Linia 1", Tree = new List<int>{
+            expectedLines.Add(new NamedTree{Name = "Linia 5", Tree = new List<int>{
                 sg.vertices.Find(vertex => vertex.Name == "Stacja 1").Id,
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 1").Id,
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 2").Id,
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 3").Id
             }}, false);
-            expectedLines.Add(new NamedTree{Name = "Linia 3", Tree = new List<int>{
+            expectedLines.Add(new NamedTree{Name = "Linia 4", Tree = new List<int>{
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 3").Id,
                 sg.vertices.Find(vertex => vertex.Name == "Lokomotywownia 1").Id
             }}, false);
             foreach(NamedTree nt in sg.lines){
                 foreach(NamedTree ent in expectedLines.Keys){
-                    if(nt.Name == ent.Name && nt.Tree == ent.Tree){
+                    if(nt.Name == ent.Name && nt.Tree.All(x=>ent.Tree.Contains(x))){
                         expectedLines[ent] = true;
                         break;
                     }
@@ -123,34 +126,35 @@ public class WorldDataStructuresTests
             }
         
             Dictionary<NamedSubgraph, bool> expectedSubgraphs = new Dictionary<NamedSubgraph, bool>();
-            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS1", Verices = new List<int>
+            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS 1", Verices = new List<int>
             {
                 sg.vertices.Find(vertex => vertex.Name == "Stacja 1").Id,
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 1").Id,
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 2").Id
             }}, false);
-            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS2", Verices = new List<int>
+            expectedSubgraphs.Add(new NamedSubgraph{Name = "Posterunek 3", Verices = new List<int>
             {
                 sg.vertices.Find(vertex => vertex.Name == "Posterunek 3").Id
             }}, false);
-            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS3", Verices = new List<int>
+            expectedSubgraphs.Add(new NamedSubgraph{Name = "Lokomotywownia 1", Verices = new List<int>
             {
                 sg.vertices.Find(vertex => vertex.Name == "Lokomotywownia 1").Id
             }}, false);
+            Assert.AreEqual(3, sg.subgraphs.Count);
             foreach(NamedSubgraph ns in sg.subgraphs){
                 foreach(NamedSubgraph ens in expectedSubgraphs.Keys){
-                    if(ns.Name == ens.Name && ns.Verices == ens.Verices){
+                    if(ns.Name == ens.Name && ns.Verices.All(x=>ens.Verices.Contains(x))){
                         expectedSubgraphs[ens] = true;
                         break;
                     }
                 }
             }
             foreach(NamedSubgraph ns in expectedSubgraphs.Keys){
-                Assert.IsTrue(expectedSubgraphs[ns]);
+                Assert.IsTrue(expectedSubgraphs[ns], "expectedSubgraphs[ns] " + ns.Name);
             }
         }
         
-        World w2 = World.Load(serialized);
+        World w2 = World.Load("test_data/TestWorld.json");
         SerializableGraph sg2 = JsonSerializer.Deserialize<SerializableGraph>(w2.Serialize());
         {
             Dictionary<Vertex, bool> expected = new Dictionary<Vertex, bool>();
@@ -207,21 +211,21 @@ public class WorldDataStructuresTests
                 Assert.IsTrue(expectedEdges[e]);
             }
         
-            Assert.AreEqual(3, sg.lines.Count);
+            Assert.AreEqual(2, sg2.lines.Count);
             Dictionary<NamedTree, bool> expectedLines = new Dictionary<NamedTree, bool>();
-            expectedLines.Add(new NamedTree{Name = "Linia 1", Tree = new List<int>{
+            expectedLines.Add(new NamedTree{Name = "Linia 5", Tree = new List<int>{
                 sg2.vertices.Find(vertex => vertex.Name == "Stacja 1").Id,
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 1").Id,
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 2").Id,
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 3").Id
             }}, false);
-            expectedLines.Add(new NamedTree{Name = "Linia 3", Tree = new List<int>{
+            expectedLines.Add(new NamedTree{Name = "Linia 4", Tree = new List<int>{
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 3").Id,
                 sg2.vertices.Find(vertex => vertex.Name == "Lokomotywownia 1").Id
             }}, false);
             foreach(NamedTree nt in sg2.lines){
                 foreach(NamedTree ent in expectedLines.Keys){
-                    if(nt.Name == ent.Name && nt.Tree == ent.Tree){
+                    if(nt.Name == ent.Name && nt.Tree.All(x=>ent.Tree.Contains(x))){
                         expectedLines[ent] = true;
                         break;
                     }
@@ -232,23 +236,23 @@ public class WorldDataStructuresTests
             }
         
             Dictionary<NamedSubgraph, bool> expectedSubgraphs = new Dictionary<NamedSubgraph, bool>();
-            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS1", Verices = new List<int>
+            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS 1", Verices = new List<int>
             {
                 sg2.vertices.Find(vertex => vertex.Name == "Stacja 1").Id,
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 1").Id,
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 2").Id
             }}, false);
-            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS2", Verices = new List<int>
+            expectedSubgraphs.Add(new NamedSubgraph{Name = "Posterunek 3", Verices = new List<int>
             {
                 sg2.vertices.Find(vertex => vertex.Name == "Posterunek 3").Id
             }}, false);
-            expectedSubgraphs.Add(new NamedSubgraph{Name = "LCS3", Verices = new List<int>
+            expectedSubgraphs.Add(new NamedSubgraph{Name = "Lokomotywownia 1", Verices = new List<int>
             {
                 sg2.vertices.Find(vertex => vertex.Name == "Lokomotywownia 1").Id
             }}, false);
             foreach(NamedSubgraph ns in sg2.subgraphs){
                 foreach(NamedSubgraph ens in expectedSubgraphs.Keys){
-                    if(ns.Name == ens.Name && ns.Verices == ens.Verices){
+                    if(ns.Name == ens.Name && ns.Verices.All(x=>ens.Verices.Contains(x))){
                         expectedSubgraphs[ens] = true;
                         break;
                     }
@@ -258,7 +262,5 @@ public class WorldDataStructuresTests
                 Assert.IsTrue(expectedSubgraphs[ns]);
             }
         }
-        
     }
-    
 }

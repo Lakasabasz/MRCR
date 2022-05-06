@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.Drawing;
+using System.IO;
 using MRCR.datastructures.serializable;
 
 namespace MRCR.datastructures;
@@ -17,26 +18,43 @@ public class Post
     private PostType _type;
     private List<Trail> _trails;
     private Point _location;
+    
+    private static int _namelessCounterPost = 0;
+    private static int _namelessCounterDepot = 0;
+    private static int _namelessCounterCombined = 0;
 
-    public Post(string name, int type)
+    public Post(string name, int type, int x, int y)
     {
         _name = name;
+        _type = (PostType)type;
+        _trails = new List<Trail>();
+        _location = new Point(x, y);
+    }
+    public Post(PostType type, Point location)
+    {
+        _trails = new List<Trail>();
+        _type = type;
         switch (type)
         {
-            case 0:
-                _type = PostType.Post;
+            case PostType.Post:
+                _name = "Posterunek " + (_namelessCounterPost + 1);
+                _namelessCounterPost++;
                 break;
-            case 1:
-                _type = PostType.Depot;
+            case PostType.Depot:
+                _name = "Lokomotywownia " + (_namelessCounterDepot + 1);
+                _namelessCounterDepot++;
                 break;
-            case 2:
-                _type = PostType.Combined;
+            case PostType.Combined:
+                _name = "Stacja " + (_namelessCounterCombined + 1);
+                _namelessCounterCombined++;
                 break;
             default:
-                throw new ArgumentException();
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
-        _trails = new List<Trail>();
+
+        _location = location;
     }
+
     public void AddTrail(Trail trail)
     {
         if (!trail.Contains(this))
@@ -75,6 +93,21 @@ public class Post
 
     public Vertex ToVertex()
     {
-        return new Vertex(_name, (int)_type, (int)_location.X, (int)_location.Y);
+        return new Vertex(_name, (int)_type, _location.X, _location.Y);
+    }
+
+    public Point GetPosition()
+    {
+        return _location;
+    }
+
+    public void SetName(string name)
+    {
+        _name = name;
+    }
+
+    public string GetName()
+    {
+        return _name;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,14 @@ public class World : IValidable
         {
             _neighborsMatrix[trail.GetPosts()[0], trail.GetPosts()[1]] = trail;
         }
+        foreach (var line in _lines)
+        {
+            line.SetWorld(this);
+        }
+        foreach (var controlPlace in _controlPlaces)
+        {
+            if(controlPlace is LCS lcs) lcs.SetWorld(this);
+        }
     }
 
     public static World Load(string worldPath)
@@ -50,14 +59,14 @@ public class World : IValidable
         Dictionary<int, Post> idPosts = new Dictionary<int, Post>();
         foreach(Vertex v in sg.vertices)
         {
-            posts.Add(new Post(v.Name, v.Type));
+            posts.Add(new Post(v.Name, v.Type, v.X, v.Y));
             idPosts.Add(v.Id, posts[^1]);
         }
         
         List<Trail> trails = new List<Trail>();
         foreach (Edge e in sg.edges)
         {
-            Trail t = new Trail(posts[e.V1], posts[e.V2]);
+            Trail t = new Trail(idPosts[e.V1], idPosts[e.V2]);
             trails.Add(t);
             Post[] p = t.GetPosts();
             p[0].AddTrail(t);
@@ -164,7 +173,10 @@ public class World : IValidable
             NamedSubgraph ns = new NamedSubgraph { Name = controlPlace.GetName(), Verices = controlPlaceVertices };
             subgraphs.Add(ns);
         }
-        SerializableGraph sg = new SerializableGraph { name = _name, vertices = vertices, edges = edges, lines = lines, subgraphs = subgraphs };
+        SerializableGraph sg = new SerializableGraph
+        {
+            name = _name, vertices = vertices, edges = edges, lines = lines, subgraphs = subgraphs
+        };
         return JsonSerializer.Serialize(sg);
     }
     public bool IsValid()
@@ -174,21 +186,119 @@ public class World : IValidable
 
     public Post AddPost(int x, int y, PostType type)
     {
-        throw new NotImplementedException();
+        // Two posts cannot be on the same position
+        Post? any = _posts.Find(p => p.GetPosition() == new Point(x, y));
+        if (any != null)
+        {
+            throw new Exception("Two posts cannot be on the same position");
+        }
+        Post post = new Post(type, new Point(x, y));
+        _neighborsMatrix.AddPost(post);
+        _posts.Add(post);
+        _controlPlaces.Add(new ControlRoom(post, post.GetName()));
+        return post;
     }
 
     public void Connect(Post p1, Post p2)
     {
-        throw new NotImplementedException();
+        // Two posts cannot be connected if they are already connected
+        if(_neighborsMatrix[p1, p2] != null)
+        {
+            throw new Exception("Two posts cannot be connected if they are already connected");
+        }
+        Trail t = new Trail(p1, p2);
+        _neighborsMatrix[p1, p2] = t;
+        p1.AddTrail(t);
+        p2.AddTrail(t);
+
+        CreateLine(new List<Post> { p1, p2 });
     }
 
     public Line CreateLine(List<Post> posts)
     {
-        throw new NotImplementedException();
+        Post? last = null;
+        List<Trail> trails = new List<Trail>();
+        foreach (Post p in posts)
+        {
+            if (last != null)
+            {
+                Trail? t = _neighborsMatrix[last, p];
+                if(t == null)
+                {
+                    throw new Exception("Posts are not connected");
+                }
+                trails.Add(t);
+            }
+            last = p;
+        }
+
+        List<Line> overlappingLines = new List<Line>();
+        foreach (Line l in _lines)
+        {
+            if (!l.ContainsAnyOf(trails)) continue;
+            if (l.GetPosts().Count > 2)
+            {
+                throw new Exception("Line overlapping with another line");
+            }
+            overlappingLines.Add(l);
+        }
+        _lines.RemoveAll(x => overlappingLines.Contains(x));
+        Line line = new Line(posts, trails, this);
+        _lines.Add(line);
+        return line;
     }
 
     public LCS CreateLCS(List<Post> posts)
     {
-        throw new NotImplementedException();
+        if(!_neighborsMatrix.VerifiConsistency(posts)) throw new Exception("Posts are not connected");
+        NeighbourMatrix subgraph = _neighborsMatrix.GetSubgraph(posts);
+        foreach(IControlPlace cp in _controlPlaces)
+        {
+            LCS? tlcs = cp as LCS;
+            if (tlcs == null) continue;
+            if(tlcs.ContainsAnyOf(posts))
+            {
+                throw new Exception("Other LCS contains posts of this LCS");
+            }
+        }
+        LCS lcs = new LCS(posts, subgraph,this);
+        for (var i = _controlPlaces.Count - 1; i >= 0; i--)
+        {
+            ControlRoom? cr = _controlPlaces[i] as ControlRoom;
+            if (cr == null) continue;
+            if (lcs.ContainsAnyOf(cr.GetPosts()))
+            {
+                _controlPlaces.RemoveAt(i);
+            }
+        }
+        _controlPlaces.Add(lcs);
+        return lcs;
+    }
+
+    public void ExpandLine(Line line, Trail trail)
+    {
+        Line? overlapping = null;
+        foreach (var l in _lines)
+        {
+            if (!l.ContainsAnyOf(new List<Trail> { trail })) continue;
+            if (l.GetPosts().Count > 2)
+            {
+                throw new Exception("Line overlapping with another line");
+            }
+            overlapping = l;
+        }
+        _lines.Remove(overlapping);
+    }
+
+    public void ExpandLCS(LCS lcs, Post post)
+    {
+        ControlRoom? overlapping = null;
+        foreach (var cr in _controlPlaces)
+        {
+            if (!cr.GetPosts().Contains(post)) continue;
+            if(cr is LCS) throw new Exception("LCS overlaps another LCS");
+            overlapping = cr as ControlRoom;
+        }
+        _controlPlaces.Remove(overlapping);
     }
 }
