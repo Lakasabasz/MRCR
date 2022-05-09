@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Windows;
 using MRCR.datastructures.serializable;
+using Point = System.Drawing.Point;
 
 namespace MRCR.datastructures;
 
@@ -52,7 +53,17 @@ public class World : IValidable
     {
         var worldData = File.ReadAllLines(worldPath);
         string worldDataString = string.Join("\n", worldData);
-        SerializableGraph? sg = JsonSerializer.Deserialize<SerializableGraph>(worldDataString);
+        SerializableGraph? sg;
+        try
+        {
+            sg = JsonSerializer.Deserialize<SerializableGraph>(worldDataString);
+        }
+        catch (JsonException e)
+        {
+            Console.WriteLine(e);
+            MessageBox.Show("Invalid world file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            throw e;
+        }
         if (sg == null) throw new Exception("Could not deserialize world data");
         
         List<Post> posts = new List<Post>();

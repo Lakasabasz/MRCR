@@ -110,4 +110,11 @@ public class Post
     {
         return _name;
     }
+
+    public static void ResetCounters()
+    {
+        _namelessCounterCombined = 0;
+        _namelessCounterDepot = 0;
+        _namelessCounterPost = 0;
+    }
 }

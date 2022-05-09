@@ -26,4 +26,9 @@ public class Vertex
 
     public int Y { get; set; }
     public int X { get; set; }
+
+    public static void ResetCounters()
+    {
+        _lastId = 0;
+    }
 }

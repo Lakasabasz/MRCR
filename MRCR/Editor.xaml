@@ -17,17 +17,6 @@
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.ColumnSpan="3">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Plik">
-                    <MenuItem Header="Zapis" />
-                    <MenuItem Header="Zamknij" />
-                </MenuItem>
-                <MenuItem Header="Pomoc">
-                    <MenuItem Header="O programie" />
-                </MenuItem>
-            </Menu>
-        </DockPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -55,15 +44,30 @@
                     </TabItem.Content>
                 </TabItem>
             </TabControl>
-            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="0.5">
-                <ContentControl Name="ContentToolBar" Margin="5,0,0,0"/>
-            </Border>
+            <ContentControl Grid.Row="1" BorderBrush="Gray" BorderThickness="0.5" Name="ContentToolBar" Margin="5,0,0,0"/>
         </Grid>
+        <DockPanel Grid.ColumnSpan="3">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_Plik">
+                    <MenuItem Header="Zapis" />
+                    <MenuItem Header="Zamknij" />
+                </MenuItem>
+                <MenuItem Header="Pomoc">
+                    <MenuItem Header="O programie" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
         <StackPanel Grid.Column="2" Grid.Row="1" Name="SpSoProperties" />
         <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" TabStripPlacement="Bottom">
             <TabItem Name="TiOrganizacja" Header="Organizacja">
                 <TabItem.Content>
-                    <Canvas Name="OrganizationMap"/>
+                    <Canvas Name="CanvasOrganizationMap"
+                            Loaded="CanvasOrganizationMap_OnLoaded"
+                            SizeChanged="CanvasOrganizationMap_OnSizeChanged"
+                            MouseLeftButtonUp="CanvasOrganizationMap_OnMouseLeftButtonUp"
+                            MouseLeftButtonDown="CanvasOrganizationMap_OnMouseLeftButtonDown"
+                            MouseMove="CanvasOrganizationMap_OnMouseMove">
+                        </Canvas>
                 </TabItem.Content>
             </TabItem>
             <TabItem Name="TiSzlak" Header="Szlak" IsEnabled="False">

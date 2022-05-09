@@ -13,4 +13,9 @@ public partial class ToolSetOrganizacja : UserControl
     {
         InitializeComponent();
     }
+
+    private void BtAddPost_OnToolTipClosing(object sender, ToolTipEventArgs e)
+    {
+        e.Handled = true;
+    }
 }

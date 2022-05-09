@@ -10,6 +10,12 @@ namespace MRCR_tests;
 
 public class WorldDataStructuresTests
 {
+    [SetUp]
+    public void ResetIterators()
+    {
+        Vertex.ResetCounters();
+        Post.ResetCounters();
+    }
     [Test, NonParallelizable, Order(1)]
     public void CreateTest()
     {

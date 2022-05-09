@@ -8,7 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Vertical">
         <WrapPanel ItemHeight="30" ItemWidth="30">
-            <ToggleButton Name="BtAddPost" ToolTip="Dodaj posterunek" Margin="0,0,5,5"><Image Source="../icons/train-station.png"/></ToggleButton>
+            <ToggleButton Name="BtAddPost" Margin="0,0,5,5" ToolTip="Dodaj posterunek" ToolTipClosing="BtAddPost_OnToolTipClosing">
+                <Image Source="../icons/train-station.png"/>
+            </ToggleButton>
             <ToggleButton Name="BtAddDepot" ToolTip="Dodaj lokomotywownię" Margin="0,0,5,5"><Image Source="../icons/train-depot.png" /></ToggleButton>
             <ToggleButton Name="BtAddStationDepot" ToolTip="Dodaj stację z lokomotywownią" Margin="0,0,5,5"><Image Source="../icons/railway-station.png" /></ToggleButton>
             <Button Name="BtAddLine" ToolTip="Utwórz linię kolejową" Margin="0,0,5,5"><Image Source="../icons/line-map.png" /></Button>

@@ -1,4 +1,6 @@
-﻿namespace MRCR.services;
+﻿using System.Text.Json;
+
+namespace MRCR.services;
 
 public interface IFactoryWindow
 {
@@ -10,8 +12,12 @@ internal class FactoryWindow : IFactoryWindow
 {
     public void DisplayEditorWindow(string worldPath)
     {
-        Editor editor = new Editor(worldPath);
-        editor.ShowDialog();
+        try
+        {
+            Editor editor = new Editor(worldPath);
+            editor.ShowDialog();
+        }
+        catch (JsonException) {}
     }
 
     public void DisplayGameWindow(string worldPath)
