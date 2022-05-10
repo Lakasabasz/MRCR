@@ -18,34 +18,32 @@
             <Setter Property="Margin" Value="0,0,5,5" />
         </Style>
     </UserControl.Resources>
-    <StackPanel Orientation="Vertical">
-        <WrapPanel ItemHeight="40" ItemWidth="40">
-            <RadioButton Name="BtAddPost" GroupName="Tsot" ToolTip="Dodaj posterunek" ToolTipClosing="BtAddPost_OnToolTipClosing">
-                <Image Source="../icons/add-train-post.png"/>
-            </RadioButton>
+    <StackPanel Orientation="Vertical" RadioButton.Click="ButtonBase_OnClick">
+        <WrapPanel Name="MainTools" ItemHeight="40" ItemWidth="40">
+            <RadioButton Name="BtAddPost" GroupName="Tsot" ToolTip="Dodaj posterunek"><Image Source="../icons/add-train-post.png"/></RadioButton>
             <RadioButton Name="BtAddDepot" GroupName="Tsot" ToolTip="Dodaj lokomotywownię"><Image Source="../icons/add-train-depot.png" /></RadioButton>
             <RadioButton Name="BtAddStationDepot" GroupName="Tsot" ToolTip="Dodaj stację z lokomotywownią"><Image Source="../icons/add-train-station.png"/></RadioButton>
             <Button Name="BtAddLine" ToolTip="Utwórz linię kolejową"><Image Source="../icons/line-map.png" /></Button>
             <Button Name="BtAddLCS" ToolTip="Utwórz LCS"><Image Source="../icons/lcs-area.png" /></Button>
             <RadioButton Name="BtMove" GroupName="Tsot" ToolTip="Przesuń"><Image Source="../icons/all-directions.png" /></RadioButton>
-            <RadioButton Name="BtSelect" GroupName="Tsot" ToolTip="Zaznacz"><Image Source="../icons/select.png" /></RadioButton>
-            <RadioButton Name="BtDelete" GroupName="Tsot" ToolTip="Usuń"><Image Source="../icons/close.png"/> </RadioButton>
+            <RadioButton Name="BtSelect" GroupName="Tsot" ToolTip="Zaznacz" Checked="BtSelect_OnChecked" Unchecked="BtSelect_OnUnchecked"><Image Source="../icons/select.png" /></RadioButton>
+            <RadioButton Name="BtDelete" GroupName="Tsot" ToolTip="Usuń" Checked="BtDelete_OnChecked" Unchecked="BtDelete_OnUnchecked"><Image Source="../icons/close.png"/></RadioButton>
             <RadioButton Name="BtConnect" GroupName="Tsot" ToolTip="Połącz szlakiem"><Image Source="../icons/plug.png" /></RadioButton>
             <RadioButton Name="BtMerge" GroupName="Tsot" ToolTip="Dołącz do istniejącej linii/LCS-a"><Image Source="../icons/merge.png" /></RadioButton>
             <Button Name="BtExclude" ToolTip="Oddziel od istniejącej linii/LCS-a"><Image Source="../icons/merge(1).png" /></Button>
         </WrapPanel>
         <Separator></Separator>
         <WrapPanel Name="SWpSelect" ItemHeight="30" ItemWidth="30" Visibility="Collapsed">
-            <RadioButton Name="SBtSelectObject" GroupName="TsotSel" ToolTip="Zaznacz posterunek"><Image Source="../icons/train.png" /></RadioButton>
+            <RadioButton Name="SBtSelectObject" GroupName="TsotSel" ToolTip="Zaznacz posterunek" IsChecked="True"><Image Source="../icons/train.png" /></RadioButton>
             <RadioButton Name="SBtSelectTrail" GroupName="TsotSel" ToolTip="Zaznacz szlak"><Image Source="../icons/plug.png" /></RadioButton>
             <RadioButton Name="SBtSelectLine" GroupName="TsotSel" ToolTip="Zaznacz linię"><Image Source="../icons/graph.png" /></RadioButton>
             <RadioButton Name="SBtSelectLCS" GroupName="TsotSel" ToolTip="Zaznacz obszar LCS-a"><Image Source="../icons/select.png" /></RadioButton>
         </WrapPanel>
         <WrapPanel Name="SWpDelete" ItemHeight="30" ItemWidth="30" Visibility="Collapsed">
-            <RadioButton Name="SBtDeleteObject" GroupName="TsotDel" ToolTip="Usuń posterunek" Margin="0,5,5,0"><Image Source="../icons/train.png" /></RadioButton>
-            <RadioButton Name="SBtDeleteTrail" GroupName="TsotDel" ToolTip="Usuń szlak" Margin="0,5,5,0"><Image Source="../icons/plug.png" /></RadioButton>
-            <RadioButton Name="SBtDeleteLine" GroupName="TsotDel" ToolTip="Usuń linię" Margin="0,5,5,0"><Image Source="../icons/graph.png" /></RadioButton>
-            <RadioButton Name="SBtDeleteLCS" GroupName="TsotDel" ToolTip="Usuń LCS-a" Margin="0,5,5,0"><Image Source="../icons/select.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteObject" GroupName="TsotDel" ToolTip="Usuń posterunek" IsChecked="True"><Image Source="../icons/train.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteTrail" GroupName="TsotDel" ToolTip="Usuń szlak"><Image Source="../icons/plug.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteLine" GroupName="TsotDel" ToolTip="Usuń linię"><Image Source="../icons/graph.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteLCS" GroupName="TsotDel" ToolTip="Usuń LCS-a"><Image Source="../icons/select.png" /></RadioButton>
         </WrapPanel>
     </StackPanel>
 </UserControl>

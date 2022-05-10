@@ -44,6 +44,8 @@ public partial class Editor : Window
 
     public void CanvasRelease(PointInt point)
     {
+        // Check current tab
+        // Check current tool
         throw new System.NotImplementedException();
     }
 
