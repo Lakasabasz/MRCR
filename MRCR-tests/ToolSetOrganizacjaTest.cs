@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using MRCR.Editor_UC;
+using MRCR.Editor;
 using NUnit.Framework;
 
 namespace MRCR_tests;

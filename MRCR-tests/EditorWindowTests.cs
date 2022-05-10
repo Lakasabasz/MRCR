@@ -11,7 +11,7 @@ using System.Windows.Input;
 using MRCR;
 using MRCR.datastructures;
 using MRCR.datastructures.serializable;
-using MRCR.Editor_UC;
+using MRCR.Editor;
 using NUnit.Framework;
 using Point = System.Drawing.Point;
 
@@ -39,16 +39,16 @@ public class EditorWindowTests
     public void EditorWindowShowTest()
     {
         string filename = SetupWorldFile();
-        Editor editor = new Editor(filename);
-        editor.ShowDialog();
+        EditorWindow editorWindow = new EditorWindow(filename);
+        editorWindow.ShowDialog();
     }
 
     [Test, Apartment(ApartmentState.STA), NonParallelizable, Order(1)]
     public void EditorWindowBeginStateTest()
     {
         string filename = SetupWorldFile();
-        Editor editor = new Editor(filename);
-        ToolSetOrganizacja? tso = editor.ContentToolBar.Content as ToolSetOrganizacja;
+        EditorWindow editorWindow = new EditorWindow(filename);
+        ToolSetOrganizacja? tso = editorWindow.ContentToolBar.Content as ToolSetOrganizacja;
         Assert.IsNotNull(tso);
         Image?[] images =
         {
@@ -77,36 +77,36 @@ public class EditorWindowTests
             Assert.IsNotNull(image);
             Assert.IsNotNull(image.Source);
         }
-        Assert.IsTrue(editor.TiOrganizacja.IsEnabled);
-        Assert.IsFalse(editor.TiSzlak.IsEnabled);
-        Assert.IsFalse(editor.TiSchem.IsEnabled);
-        Assert.IsFalse(editor.TiFiz.IsEnabled);
-        Assert.IsFalse(editor.TiDepend.IsEnabled);
+        Assert.IsTrue(editorWindow.TiOrganizacja.IsEnabled);
+        Assert.IsFalse(editorWindow.TiSzlak.IsEnabled);
+        Assert.IsFalse(editorWindow.TiSchem.IsEnabled);
+        Assert.IsFalse(editorWindow.TiFiz.IsEnabled);
+        Assert.IsFalse(editorWindow.TiDepend.IsEnabled);
         
-        Assert.IsEmpty(editor.TreeSzlakPost.Items);
-        Assert.IsEmpty(editor.TreeLines.Items);
-        Assert.IsEmpty(editor.TreeLCS.Items);
+        Assert.IsEmpty(editorWindow.TreeSzlakPost.Items);
+        Assert.IsEmpty(editorWindow.TreeLines.Items);
+        Assert.IsEmpty(editorWindow.TreeLCS.Items);
         
-        Assert.IsEmpty(editor.SpSoProperties.Children);
-        editor.Show();
+        Assert.IsEmpty(editorWindow.SpSoProperties.Children);
+        editorWindow.Show();
     }
 
     [Test, Apartment(ApartmentState.STA), NonParallelizable, Order(3)]
     public void EditorWindowAddPostTest()
     {
         string filename = SetupWorldFile();
-        Editor editor = new Editor(filename);
-        ToolSetOrganizacja? tso = editor.ContentToolBar.Content as ToolSetOrganizacja;
+        EditorWindow editorWindow = new EditorWindow(filename);
+        ToolSetOrganizacja? tso = editorWindow.ContentToolBar.Content as ToolSetOrganizacja;
         tso.BtAddPost.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-        editor.CanvasRelease(new Point(5, 5));
-        SerializableGraph sg = JsonSerializer.Deserialize<SerializableGraph>(editor.World.Serialize());
+        editorWindow.CanvasRelease(new Point(5, 5));
+        SerializableGraph sg = JsonSerializer.Deserialize<SerializableGraph>(editorWindow.World.Serialize());
         Assert.IsNotEmpty(sg.vertices);
-        Assert.IsNotEmpty(editor.TreeSzlakPost.Items);
-        Assert.AreEqual(1, editor.TreeSzlakPost.Items.Count);
+        Assert.IsNotEmpty(editorWindow.TreeSzlakPost.Items);
+        Assert.AreEqual(1, editorWindow.TreeSzlakPost.Items.Count);
         Assert.IsNotNull(sg.subgraphs);
 
-        Assert.IsNotEmpty(editor.TreeLCS.Items);
-        TreeViewItem? treeItemLCS = editor.TreeLCS.Items[0] as TreeViewItem;
+        Assert.IsNotEmpty(editorWindow.TreeLCS.Items);
+        TreeViewItem? treeItemLCS = editorWindow.TreeLCS.Items[0] as TreeViewItem;
         Assert.IsNotNull(treeItemLCS);
         Assert.IsTrue(treeItemLCS.IsExpanded);
         Assert.IsNotEmpty(treeItemLCS.Items);

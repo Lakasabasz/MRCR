@@ -14,7 +14,7 @@ internal class FactoryWindow : IFactoryWindow
     {
         try
         {
-            Editor editor = new Editor(worldPath);
+            EditorWindow editor = new EditorWindow(worldPath);
             editor.ShowDialog();
         }
         catch (JsonException) {}

@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using MRCR.canvasdrawable;
 using MRCR.datastructures;
-using MRCR.Editor_UC;
-
+using MRCR.Editor;
 using Ellipse = MRCR.canvasdrawable.Ellipse;
 using PointFloat = System.Windows.Point;
 using PointInt = System.Drawing.Point;
@@ -19,14 +15,14 @@ using SizeFloat = System.Windows.Size;
 
 namespace MRCR;
 
-public partial class Editor : Window
+public partial class EditorWindow : Window
 {
     private ToolSetOrganizacja _toolSetOrganizacja;
     private double _scale = 20;
     private bool _lpm = false;
     private Dictionary<string, Tuple<List<IDrawableProxy>, bool>> _canvasShapes;
     internal World World { get;}
-    public Editor(string worldPath)
+    public EditorWindow(string worldPath)
     {
         InitializeComponent();
         Left  = 0;
