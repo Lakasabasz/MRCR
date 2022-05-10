@@ -483,3 +483,4 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider
 
 MRCR/Editor UC/sandbox.*
+MRCR-tests/SandboxTests.cs

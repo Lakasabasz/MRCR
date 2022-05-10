@@ -2,10 +2,11 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <RootNamespace>MRCR</RootNamespace>
+        <TargetFrameworks>net7.0-windows</TargetFrameworks>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -52,9 +53,6 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
       <None Remove="icons\railway-station.png" />
-      <Resource Include="icons\railway-station.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
       <None Remove="icons\select.png" />
       <Resource Include="icons\select.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -69,6 +67,18 @@
       </Resource>
       <None Remove="icons\train-station.png" />
       <Resource Include="icons\train-station.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\add-train-depot.png" />
+      <Resource Include="icons\add-train-depot.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\add-train-post.png" />
+      <Resource Include="icons\add-train-post.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="icons\add-train-station.png" />
+      <Resource Include="icons\add-train-station.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>

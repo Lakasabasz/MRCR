@@ -4,36 +4,48 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MRCR.Editor_UC"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="Image">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+        </Style>
+        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+            <Setter Property="Margin" Value="0,0,5,5" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,0,5,5" />
+        </Style>
+    </UserControl.Resources>
     <StackPanel Orientation="Vertical">
-        <WrapPanel ItemHeight="30" ItemWidth="30">
-            <ToggleButton Name="BtAddPost" Margin="0,0,5,5" ToolTip="Dodaj posterunek" ToolTipClosing="BtAddPost_OnToolTipClosing">
-                <Image Source="../icons/train-station.png"/>
-            </ToggleButton>
-            <ToggleButton Name="BtAddDepot" ToolTip="Dodaj lokomotywownię" Margin="0,0,5,5"><Image Source="../icons/train-depot.png" /></ToggleButton>
-            <ToggleButton Name="BtAddStationDepot" ToolTip="Dodaj stację z lokomotywownią" Margin="0,0,5,5"><Image Source="../icons/railway-station.png" /></ToggleButton>
-            <Button Name="BtAddLine" ToolTip="Utwórz linię kolejową" Margin="0,0,5,5"><Image Source="../icons/line-map.png" /></Button>
-            <Button Name="BtAddLCS" ToolTip="Utwórz LCS" Margin="0,0,5,5"><Image Source="../icons/lcs-area.png" /></Button>
-            <ToggleButton Name="BtMove" ToolTip="Przesuń" Margin="0,0,5,5"><Image Source="../icons/all-directions.png" /></ToggleButton>
-            <ToggleButton Name="BtSelect" ToolTip="Zaznacz" Margin="0,0,5,5"><Image Source="../icons/select.png" /></ToggleButton>
-            <ToggleButton Name="BtDelete" ToolTip="Usuń" Margin="0,0,5,5"><Image Source="../icons/close.png"/> </ToggleButton>
-            <ToggleButton Name="BtConnect" ToolTip="Połącz szlakiem" Margin="0,0,5,5"><Image Source="../icons/plug.png" /></ToggleButton>
-            <ToggleButton Name="BtMerge" ToolTip="Dołącz do istniejącej linii/LCS-a" Margin="0,0,5,5"><Image Source="../icons/merge.png" /></ToggleButton>
-            <Button Name="BtExclude" ToolTip="Oddziel od istniejącej linii/LCS-a" Margin="0,0,5,5"><Image Source="../icons/merge(1).png" /></Button>
+        <WrapPanel ItemHeight="40" ItemWidth="40">
+            <RadioButton Name="BtAddPost" GroupName="Tsot" ToolTip="Dodaj posterunek" ToolTipClosing="BtAddPost_OnToolTipClosing">
+                <Image Source="../icons/add-train-post.png"/>
+            </RadioButton>
+            <RadioButton Name="BtAddDepot" GroupName="Tsot" ToolTip="Dodaj lokomotywownię"><Image Source="../icons/add-train-depot.png" /></RadioButton>
+            <RadioButton Name="BtAddStationDepot" GroupName="Tsot" ToolTip="Dodaj stację z lokomotywownią"><Image Source="../icons/add-train-station.png"/></RadioButton>
+            <Button Name="BtAddLine" ToolTip="Utwórz linię kolejową"><Image Source="../icons/line-map.png" /></Button>
+            <Button Name="BtAddLCS" ToolTip="Utwórz LCS"><Image Source="../icons/lcs-area.png" /></Button>
+            <RadioButton Name="BtMove" GroupName="Tsot" ToolTip="Przesuń"><Image Source="../icons/all-directions.png" /></RadioButton>
+            <RadioButton Name="BtSelect" GroupName="Tsot" ToolTip="Zaznacz"><Image Source="../icons/select.png" /></RadioButton>
+            <RadioButton Name="BtDelete" GroupName="Tsot" ToolTip="Usuń"><Image Source="../icons/close.png"/> </RadioButton>
+            <RadioButton Name="BtConnect" GroupName="Tsot" ToolTip="Połącz szlakiem"><Image Source="../icons/plug.png" /></RadioButton>
+            <RadioButton Name="BtMerge" GroupName="Tsot" ToolTip="Dołącz do istniejącej linii/LCS-a"><Image Source="../icons/merge.png" /></RadioButton>
+            <Button Name="BtExclude" ToolTip="Oddziel od istniejącej linii/LCS-a"><Image Source="../icons/merge(1).png" /></Button>
         </WrapPanel>
         <Separator></Separator>
         <WrapPanel Name="SWpSelect" ItemHeight="30" ItemWidth="30" Visibility="Collapsed">
-            <ToggleButton Name="SBtSelectObject" ToolTip="Zaznacz posterunek" Margin="0,5,5,0"><Image Source="../icons/train.png" /></ToggleButton>
-            <ToggleButton Name="SBtSelectTrail" ToolTip="Zaznacz szlak" Margin="0,5,5,0"><Image Source="../icons/plug.png" /></ToggleButton>
-            <ToggleButton Name="SBtSelectLine" ToolTip="Zaznacz linię" Margin="0,5,5,0"><Image Source="../icons/graph.png" /></ToggleButton>
-            <ToggleButton Name="SBtSelectLCS" ToolTip="Zaznacz obszar LCS-a" Margin="0,5,5,0"><Image Source="../icons/select.png" /></ToggleButton>
+            <RadioButton Name="SBtSelectObject" GroupName="TsotSel" ToolTip="Zaznacz posterunek"><Image Source="../icons/train.png" /></RadioButton>
+            <RadioButton Name="SBtSelectTrail" GroupName="TsotSel" ToolTip="Zaznacz szlak"><Image Source="../icons/plug.png" /></RadioButton>
+            <RadioButton Name="SBtSelectLine" GroupName="TsotSel" ToolTip="Zaznacz linię"><Image Source="../icons/graph.png" /></RadioButton>
+            <RadioButton Name="SBtSelectLCS" GroupName="TsotSel" ToolTip="Zaznacz obszar LCS-a"><Image Source="../icons/select.png" /></RadioButton>
         </WrapPanel>
         <WrapPanel Name="SWpDelete" ItemHeight="30" ItemWidth="30" Visibility="Collapsed">
-            <ToggleButton Name="SBtDeleteObject" ToolTip="Usuń posterunek" Margin="0,5,5,0"><Image Source="../icons/train.png" /></ToggleButton>
-            <ToggleButton Name="SBtDeleteTrail" ToolTip="Usuń szlak" Margin="0,5,5,0"><Image Source="../icons/plug.png" /></ToggleButton>
-            <ToggleButton Name="SBtDeleteLine" ToolTip="Usuń linię" Margin="0,5,5,0"><Image Source="../icons/graph.png" /></ToggleButton>
-            <ToggleButton Name="SBtDeleteLCS" ToolTip="Usuń LCS-a" Margin="0,5,5,0"><Image Source="../icons/select.png" /></ToggleButton>
+            <RadioButton Name="SBtDeleteObject" GroupName="TsotDel" ToolTip="Usuń posterunek" Margin="0,5,5,0"><Image Source="../icons/train.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteTrail" GroupName="TsotDel" ToolTip="Usuń szlak" Margin="0,5,5,0"><Image Source="../icons/plug.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteLine" GroupName="TsotDel" ToolTip="Usuń linię" Margin="0,5,5,0"><Image Source="../icons/graph.png" /></RadioButton>
+            <RadioButton Name="SBtDeleteLCS" GroupName="TsotDel" ToolTip="Usuń LCS-a" Margin="0,5,5,0"><Image Source="../icons/select.png" /></RadioButton>
         </WrapPanel>
     </StackPanel>
 </UserControl>
