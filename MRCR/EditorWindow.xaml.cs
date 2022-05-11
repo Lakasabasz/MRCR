@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using MRCR.canvasdrawable;
 using MRCR.datastructures;
 using MRCR.Editor;
 using Ellipse = MRCR.canvasdrawable.Ellipse;
@@ -30,7 +28,6 @@ public partial class EditorWindow : Window
 {
     private ToolSetOrganizacja _toolSetOrganizacja;
     private double _scale = 20;
-    private bool _lpm = false;
     private Dictionary<EditorMode, ICanvasManager> _canvasManagers;
     internal readonly CanvasMediator CanvasMediator;
     internal World World { get;}
@@ -49,20 +46,29 @@ public partial class EditorWindow : Window
         CanvasMediator = new CanvasMediator();
         CanvasMediator.Register(
             EditorMode.Organization, ActionType.CREATE_POST, new OrganizationCreatePostMediator(World, _canvasManagers[EditorMode.Organization]));
+        CanvasMediator.Register(
+            EditorMode.Organization, ActionType.CREATE_DEPOT, new OrganizationCreateDepotMediator(World, _canvasManagers[EditorMode.Organization]));
+        CanvasMediator.Register(
+            EditorMode.Organization, ActionType.CREATE_STATION, new OrganizationCreateStationMediator(World, _canvasManagers[EditorMode.Organization]));
     }
 
     private void CanvasOrganizationMap_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        _lpm = false;
         PointFloat p = e.GetPosition(CanvasOrganizationMap);
         State.Text = "LPM Up: " + p;
-        CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
-            .ButtonRelease(new UnifiedPoint(Math.Round(p.X/_scale), Math.Round(p.Y/_scale)));
+        try
+        {
+            CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
+                .ButtonRelease(new UnifiedPoint(Math.Round(p.X/_scale), Math.Round(p.Y/_scale)));
+        }
+        catch (NotImplementedException)
+        {
+            MessageBox.Show("Nie zaimplementowano tego typu akcji", "Nie zaimplementowano", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void CanvasOrganizationMap_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        _lpm = true;
         PointFloat p = e.GetPosition(CanvasOrganizationMap);
         p.X = Math.Round(p.X/_scale);
         p.Y = Math.Round(p.Y/_scale);
@@ -74,7 +80,7 @@ public partial class EditorWindow : Window
         PointFloat p = e.GetPosition(CanvasOrganizationMap);
         p.X = Math.Round(p.X/_scale);
         p.Y = Math.Round(p.Y/_scale);
-        State.Text = "LPM " + (_lpm ? "Down" : "Up") + " Move: " + p;
+        State.Text = "LPM " + " Move: " + p;
     }
 
     private void CanvasOrganizationMap_OnLoaded(object sender, RoutedEventArgs e)
@@ -96,8 +102,8 @@ public partial class EditorWindow : Window
                 if (gridDots.Any(x => x.Item1.IsOnPosition(new PointInt(i, j)))) continue;
                 Ellipse dot;
                 if(i % spacing == 0 && j % spacing == 0)
-                    dot = new Ellipse(new SizeInt(5, 5), new PointInt(i, j), Brushes.Gray, _scale);
-                else dot = new Ellipse(new SizeInt(5, 5), new PointInt(i, j), Brushes.LightGray, _scale);
+                    dot = new Ellipse(new SizeInt(2, 2), new PointInt(i, j), Brushes.Gray, _scale);
+                else dot = new Ellipse(new SizeInt(2, 2), new PointInt(i, j), Brushes.LightGray, _scale);
                 gridDots.Add(new NameableIDrawableProxy(dot, null));
             }
         }

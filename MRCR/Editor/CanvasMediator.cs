@@ -30,7 +30,7 @@ public class CanvasMediator
         }
         if(!_mediators[mode].ContainsKey(actionType))
         {
-            throw new Exception("No mediator registered for action " + actionType);
+            throw new NotImplementedException();
         }
         return _mediators[mode][actionType];
     }

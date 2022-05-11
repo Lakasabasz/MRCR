@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Media;
 using MRCR.canvasdrawable;
 using MRCR.datastructures;
@@ -8,22 +6,23 @@ using Size = System.Drawing.Size;
 
 namespace MRCR.Editor;
 
-public class OrganizationCreatePostMediator : OrganizationCreatePostAbstract, ICanvasMediator
+public class OrganizationCreateStationMediator: OrganizationCreatePostAbstract, ICanvasMediator
 {
-    public OrganizationCreatePostMediator(World world, ICanvasManager canvasManager) : base(world, canvasManager){}
+    public OrganizationCreateStationMediator(World world, ICanvasManager canvasManager) : base(world, canvasManager) { }
+
     public void ButtonPress(UnifiedPoint worldMouseCoords)
     {
         throw new System.NotImplementedException();
     }
-    
+
     public void ButtonRelease(UnifiedPoint worldMouseCoords)
     {
         var mouseCords = worldMouseCoords.ToDrawingPoint();
         try
         {
-            Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Depot);
+            Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Combined);
             var drawingCoords = _canvasManager.ToDrawingCoordinates(worldMouseCoords);
-            _canvasManager.AddUiElement(new Ellipse(new Size(10, 10), drawingCoords.Move(-5/2, -5/2).ToDrawingPoint(), Brushes.Red), "objects", p.GetName());
+            _canvasManager.AddUiElement(new Ellipse(new Size(10, 10), drawingCoords.Move(-5/2, -5/2).ToDrawingPoint(), Brushes.Yellow), "objects", p.GetName());
             _canvasManager.UpdateCanvas();
         }
         catch (PostsCollisionException)
