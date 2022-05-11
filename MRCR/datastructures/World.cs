@@ -200,7 +200,7 @@ public class World : IValidable
         Post? any = _posts.Find(p => p.GetPosition() == new Point(x, y));
         if (any != null)
         {
-            throw new Exception("Two posts cannot be on the same position");
+            throw new PostsCollisionException();
         }
         Post post = new Post(type, new Point(x, y));
         _neighborsMatrix.AddPost(post);

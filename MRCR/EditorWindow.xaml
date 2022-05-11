@@ -67,7 +67,7 @@
                             MouseLeftButtonUp="CanvasOrganizationMap_OnMouseLeftButtonUp"
                             MouseLeftButtonDown="CanvasOrganizationMap_OnMouseLeftButtonDown"
                             MouseMove="CanvasOrganizationMap_OnMouseMove">
-                        </Canvas>
+                    </Canvas>
                 </TabItem.Content>
             </TabItem>
             <TabItem Name="TiSzlak" Header="Szlak" IsEnabled="False">

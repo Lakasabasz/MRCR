@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using MRCR.canvasdrawable;
@@ -15,12 +16,23 @@ using SizeFloat = System.Windows.Size;
 
 namespace MRCR;
 
+public enum EditorMode
+{
+    Organization,
+    Trails,
+    PostSchema,
+    PhysicalSchema,
+    Dependencies,
+    TimeTable
+};
+
 public partial class EditorWindow : Window
 {
     private ToolSetOrganizacja _toolSetOrganizacja;
     private double _scale = 20;
     private bool _lpm = false;
-    private Dictionary<string, Tuple<List<IDrawableProxy>, bool>> _canvasShapes;
+    private Dictionary<EditorMode, ICanvasManager> _canvasManagers;
+    internal readonly CanvasMediator CanvasMediator;
     internal World World { get;}
     public EditorWindow(string worldPath)
     {
@@ -30,28 +42,22 @@ public partial class EditorWindow : Window
         World = World.Load(worldPath);
         _toolSetOrganizacja = new ToolSetOrganizacja();
         ContentToolBar.Content = _toolSetOrganizacja;
-        CanvasOrganizationMap.UpdateLayout();
-        _canvasShapes = new();
-    }
-    public void CanvasPress(PointInt point)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void CanvasRelease(PointInt point)
-    {
-        // Check current tab
-        // Check current tool
-        throw new System.NotImplementedException();
+        _canvasManagers = new()
+        {
+            { EditorMode.Organization, new OrganizationCanvasManager(CanvasOrganizationMap, _scale)}
+        };
+        CanvasMediator = new CanvasMediator();
+        CanvasMediator.Register(
+            EditorMode.Organization, ActionType.CREATE_POST, new OrganizationCreatePostMediator(World, _canvasManagers[EditorMode.Organization]));
     }
 
     private void CanvasOrganizationMap_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         _lpm = false;
         PointFloat p = e.GetPosition(CanvasOrganizationMap);
-        p.X = Math.Round(p.X/_scale);
-        p.Y = Math.Round(p.Y/_scale);
         State.Text = "LPM Up: " + p;
+        CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
+            .ButtonRelease(new UnifiedPoint(Math.Round(p.X/_scale), Math.Round(p.Y/_scale)));
     }
 
     private void CanvasOrganizationMap_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -75,40 +81,30 @@ public partial class EditorWindow : Window
     {
         var (h, w) = (CanvasOrganizationMap.ActualHeight, CanvasOrganizationMap.ActualWidth);
         GenerateOrganizationMapGrid(new SizeFloat(w, h));
-        RenderCanvasOrganizationMap();
+        _canvasManagers[EditorMode.Organization].UpdateCanvas();
     }
     private void GenerateOrganizationMapGrid(SizeFloat size)
     {
-        Tuple<List<IDrawableProxy>, bool> gridDots;
-        gridDots = _canvasShapes.ContainsKey("gridDots") ? _canvasShapes["gridDots"] : new Tuple<List<IDrawableProxy>, bool>(new(), true);
+        List<NameableIDrawableProxy> gridDots;
+        gridDots = _canvasManagers[EditorMode.Organization].GetCategory("gridDots");
         
         int spacing = 5;
         for (int i = 0; i < size.Width / _scale; i++)
         {
             for (int j = 0; j < size.Height/_scale; j++)
             {
-                if (gridDots.Item1.Any(x => x.IsOnPosition(new PointInt(i, j)))) continue;
+                if (gridDots.Any(x => x.Item1.IsOnPosition(new PointInt(i, j)))) continue;
                 Ellipse dot;
                 if(i % spacing == 0 && j % spacing == 0)
                     dot = new Ellipse(new SizeInt(5, 5), new PointInt(i, j), Brushes.Gray, _scale);
                 else dot = new Ellipse(new SizeInt(5, 5), new PointInt(i, j), Brushes.LightGray, _scale);
-                gridDots.Item1.Add(dot);
+                gridDots.Add(new NameableIDrawableProxy(dot, null));
             }
-        }
-        _canvasShapes["gridDots"] = gridDots;
-    }
-    private void RenderCanvasOrganizationMap()
-    {
-        CanvasOrganizationMap.Children.Clear();
-        foreach (var (_, (drawable, active)) in _canvasShapes)
-        {
-            if(!active) continue;
-            drawable.ForEach(d => CanvasOrganizationMap.Children.Add(d.GetDrawable()));
         }
     }
     private void CanvasOrganizationMap_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
         GenerateOrganizationMapGrid(e.NewSize);
-        RenderCanvasOrganizationMap();
+        _canvasManagers[EditorMode.Organization].UpdateCanvas();
     }
 }

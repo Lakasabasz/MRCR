@@ -97,8 +97,11 @@ public class EditorWindowTests
         string filename = SetupWorldFile();
         EditorWindow editorWindow = new EditorWindow(filename);
         ToolSetOrganizacja? tso = editorWindow.ContentToolBar.Content as ToolSetOrganizacja;
+        tso.BtAddPost.IsChecked = true;
         tso.BtAddPost.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-        editorWindow.CanvasRelease(new Point(5, 5));
+        editorWindow.CanvasMediator.Mediate(EditorMode.Organization, tso.CurrentActionType)
+            .ButtonRelease(new UnifiedPoint(5, 5));
+        
         SerializableGraph sg = JsonSerializer.Deserialize<SerializableGraph>(editorWindow.World.Serialize());
         Assert.IsNotEmpty(sg.vertices);
         Assert.IsNotEmpty(editorWindow.TreeSzlakPost.Items);

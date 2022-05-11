@@ -15,7 +15,8 @@ public enum ActionType
     DELETE_OBJECT, DELETE_TRAIL, DELETE_LINE, DELETE_LCS,
     CONNECT,
     MERGE,
-    EXCLUDE
+    EXCLUDE,
+    NONE
 }
 
 public partial class ToolSetOrganizacja : UserControl
@@ -70,7 +71,7 @@ public partial class ToolSetOrganizacja : UserControl
                 }
             }
         }
-        throw new Exception("Undefined state");
+        return ActionType.NONE;
     }
 
     private void BtSelect_OnChecked(object sender, RoutedEventArgs e) => SWpSelect.Visibility = Visibility.Visible;
