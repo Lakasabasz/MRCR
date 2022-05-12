@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MRCR.datastructures;
 
-public interface IControlPlace
+public interface IControlPlace : IOrganizationStructure
 {
     List<Post> GetPosts();
     string GetName();

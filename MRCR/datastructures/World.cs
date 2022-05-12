@@ -12,6 +12,12 @@ namespace MRCR.datastructures;
 
 public class World : IValidable
 {
+    public event EventHandler<IOrganizationStructure> OnWorldStateChanged;
+    protected void RaiseOnStateChanged(IOrganizationStructure structure)
+    {
+        OnWorldStateChanged?.Invoke(this, structure);
+    }
+    
     private string _name;
     private List<Post> _posts;
     private NeighbourMatrix _neighborsMatrix;
@@ -26,7 +32,6 @@ public class World : IValidable
         _lines = new List<Line>();
         _controlPlaces = new List<IControlPlace>();
     }
-
     private World(string name, List<Post> posts, List<Trail> trails, List<Line> lines, List<IControlPlace> controlPlaces)
     {
         _name = name;
@@ -47,7 +52,6 @@ public class World : IValidable
             if(controlPlace is LCS lcs) lcs.SetWorld(this);
         }
     }
-
     public static World Load(string worldPath)
     {
         var worldData = File.ReadAllLines(worldPath);
@@ -206,6 +210,7 @@ public class World : IValidable
         _neighborsMatrix.AddPost(post);
         _posts.Add(post);
         _controlPlaces.Add(new ControlRoom(post, post.GetName()));
+        RaiseOnStateChanged(post);
         return post;
     }
 
@@ -220,7 +225,7 @@ public class World : IValidable
         _neighborsMatrix[p1, p2] = t;
         p1.AddTrail(t);
         p2.AddTrail(t);
-
+        RaiseOnStateChanged(t);
         CreateLine(new List<Post> { p1, p2 });
     }
 
@@ -255,6 +260,7 @@ public class World : IValidable
         _lines.RemoveAll(x => overlappingLines.Contains(x));
         Line line = new Line(posts, trails, this);
         _lines.Add(line);
+        RaiseOnStateChanged(line);
         return line;
     }
 
@@ -282,6 +288,7 @@ public class World : IValidable
             }
         }
         _controlPlaces.Add(lcs);
+        RaiseOnStateChanged(lcs);
         return lcs;
     }
 

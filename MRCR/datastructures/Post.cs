@@ -12,20 +12,43 @@ public enum PostType
     Depot = 1,
     Combined = 2
 }
-public class Post
+public class Post: IOrganizationStructure
 {
-    private string _name;
+    public event EventHandler OnPostChanged;
+    protected void RaiseOnPostChangedEvent()
+    {
+        OnPostChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private string Name
+    {
+        get => _name;
+        set{
+            _name = value;
+            RaiseOnPostChangedEvent();
+        }
+    }
+    private Point Location
+    {
+        get => _location;
+        set{
+            _location = value;
+            RaiseOnPostChangedEvent();
+        }
+    }
+
     private PostType _type;
     private List<Trail> _trails;
+    private string _name;
     private Point _location;
-    
+
     private static int _namelessCounterPost = 0;
     private static int _namelessCounterDepot = 0;
     private static int _namelessCounterCombined = 0;
 
     public Post(string name, int type, int x, int y)
     {
-        _name = name;
+        Name = name;
         _type = (PostType)type;
         _trails = new List<Trail>();
         _location = new Point(x, y);
@@ -37,15 +60,15 @@ public class Post
         switch (type)
         {
             case PostType.Post:
-                _name = "Posterunek " + (_namelessCounterPost + 1);
+                Name = "Posterunek " + (_namelessCounterPost + 1);
                 _namelessCounterPost++;
                 break;
             case PostType.Depot:
-                _name = "Lokomotywownia " + (_namelessCounterDepot + 1);
+                Name = "Lokomotywownia " + (_namelessCounterDepot + 1);
                 _namelessCounterDepot++;
                 break;
             case PostType.Combined:
-                _name = "Stacja " + (_namelessCounterCombined + 1);
+                Name = "Stacja " + (_namelessCounterCombined + 1);
                 _namelessCounterCombined++;
                 break;
             default:
@@ -71,7 +94,7 @@ public class Post
         {
             return false;
         }
-        return _name == other._name && _type == other._type;
+        return Name == other.Name && _type == other._type;
     }
     public Trail? GetTrailContaining(Post idPost)
     {
@@ -93,22 +116,22 @@ public class Post
 
     public Vertex ToVertex()
     {
-        return new Vertex(_name, (int)_type, _location.X, _location.Y);
+        return new Vertex(Name, (int)_type, Location.X, Location.Y);
     }
 
     public Point GetPosition()
     {
-        return _location;
+        return Location;
     }
 
     public void SetName(string name)
     {
-        _name = name;
+        Name = name;
     }
 
     public string GetName()
     {
-        return _name;
+        return Name;
     }
 
     public static void ResetCounters()

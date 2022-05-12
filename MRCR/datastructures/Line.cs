@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MRCR.datastructures;
 
-public class Line
+public class Line : IOrganizationStructure
 {
     private List<Post> _posts;
     private List<Trail> _trails;

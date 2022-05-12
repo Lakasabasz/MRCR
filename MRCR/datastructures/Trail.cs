@@ -2,7 +2,7 @@
 
 namespace MRCR.datastructures;
 
-public class Trail
+public class Trail: IOrganizationStructure
 {
     private Post _refA;
     private Post _refB;

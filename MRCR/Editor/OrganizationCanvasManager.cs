@@ -7,6 +7,11 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using MRCR.canvasdrawable;
 using MRCR.datastructures;
+using Ellipse = MRCR.canvasdrawable.Ellipse;
+using PointFloat = System.Windows.Point;
+using PointInt = System.Drawing.Point;
+using SizeInt = System.Drawing.Size;
+using SizeFloat = System.Windows.Size;
 
 namespace MRCR.Editor;
 
@@ -91,5 +96,22 @@ public class OrganizationCanvasManager : ICanvasManager
             X = point.X * _scale,
             Y = point.Y * _scale
         };
+    }
+
+    public void GenerateGrid(Size size, double scale)
+    {
+        var gridDots = GetCategory("gridDots");
+        int spacing = 5;
+        for (int i = 0; i < size.Width / scale; i++)
+        {
+            for (int j = 0; j < size.Height/scale; j++)
+            {
+                if (gridDots.Any(x => x.Item1.IsOnPosition(new PointInt(i, j)))) continue;
+                Brush brush = Brushes.LightGray;
+                if (i % spacing == 0 && j % spacing == 0) brush = Brushes.Gray;
+                Ellipse dot = new Ellipse(new SizeInt(2, 2), new PointInt(i, j), brush, scale);
+                gridDots.Add(new NameableIDrawableProxy(dot, null));
+            }
+        }
     }
 }
