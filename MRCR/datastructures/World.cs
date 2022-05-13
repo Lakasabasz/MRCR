@@ -10,6 +10,7 @@ using Point = System.Drawing.Point;
 
 namespace MRCR.datastructures;
 
+
 public class World : IValidable
 {
     public event EventHandler<IOrganizationStructure> OnWorldStateChanged;
@@ -23,6 +24,7 @@ public class World : IValidable
     private NeighbourMatrix _neighborsMatrix;
     private List<Line> _lines;
     private List<IControlPlace> _controlPlaces;
+    private Dictionary<OrganisationObjectType, List<EventHandler>> _onDataChangedPropagateHandlers;
 
     public World(string name)
     {
@@ -31,6 +33,13 @@ public class World : IValidable
         _neighborsMatrix = new NeighbourMatrix();
         _lines = new List<Line>();
         _controlPlaces = new List<IControlPlace>();
+        _onDataChangedPropagateHandlers = new()
+        {
+            { OrganisationObjectType.Control, new List<EventHandler>() },
+            { OrganisationObjectType.Line, new List<EventHandler>() },
+            { OrganisationObjectType.Post, new List<EventHandler>() },
+            { OrganisationObjectType.Trail, new List<EventHandler>() },
+        };
     }
     private World(string name, List<Post> posts, List<Trail> trails, List<Line> lines, List<IControlPlace> controlPlaces)
     {
@@ -39,18 +48,16 @@ public class World : IValidable
         _lines = lines;
         _controlPlaces = controlPlaces;
         _neighborsMatrix = new NeighbourMatrix(_posts);
-        foreach (Trail trail in trails)
+        _onDataChangedPropagateHandlers = new()
         {
-            _neighborsMatrix[trail.GetPosts()[0], trail.GetPosts()[1]] = trail;
-        }
-        foreach (var line in _lines)
-        {
-            line.SetWorld(this);
-        }
-        foreach (var controlPlace in _controlPlaces)
-        {
-            if(controlPlace is LCS lcs) lcs.SetWorld(this);
-        }
+            { OrganisationObjectType.Control, new List<EventHandler>() },
+            { OrganisationObjectType.Line, new List<EventHandler>() },
+            { OrganisationObjectType.Post, new List<EventHandler>() },
+            { OrganisationObjectType.Trail, new List<EventHandler>() },
+        };
+        foreach (Trail trail in trails) _neighborsMatrix[trail.GetPosts()[0], trail.GetPosts()[1]] = trail;
+        foreach (var line in _lines) line.SetWorld(this);
+        foreach (var controlPlace in _controlPlaces) if(controlPlace is LCS lcs) lcs.SetWorld(this);
     }
     public static World Load(string worldPath)
     {
@@ -209,8 +216,11 @@ public class World : IValidable
         Post post = new Post(type, new Point(x, y));
         _neighborsMatrix.AddPost(post);
         _posts.Add(post);
-        _controlPlaces.Add(new ControlRoom(post, post.GetName()));
+        ControlRoom cr = new ControlRoom(post, post.GetName());
+        _controlPlaces.Add(cr);
+        _onDataChangedPropagateHandlers[OrganisationObjectType.Post].ForEach(method => post.OnPropertyChanged += method);
         RaiseOnStateChanged(post);
+        RaiseOnStateChanged(cr);
         return post;
     }
 
@@ -246,7 +256,6 @@ public class World : IValidable
             }
             last = p;
         }
-
         List<Line> overlappingLines = new List<Line>();
         foreach (Line l in _lines)
         {
@@ -318,4 +327,7 @@ public class World : IValidable
         }
         _controlPlaces.Remove(overlapping);
     }
+    
+    public void RegisterDelegate(OrganisationObjectType type, EventHandler del)
+                                => _onDataChangedPropagateHandlers[type].Add(del);
 }

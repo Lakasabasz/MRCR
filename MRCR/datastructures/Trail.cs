@@ -53,4 +53,10 @@ public class Trail: IOrganizationStructure
         }
         throw new ArgumentException();
     }
+    public OrganisationObjectType Type => OrganisationObjectType.Trail;
+    public event EventHandler? OnPropertyChanged;
+    public void RaisePropertyChanged()
+    {
+        OnPropertyChanged?.Invoke(this, EventArgs.Empty);
+    }
 }

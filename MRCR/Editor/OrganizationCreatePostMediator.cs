@@ -21,7 +21,7 @@ public class OrganizationCreatePostMediator : OrganizationCreatePostAbstract, IC
         var mouseCords = worldMouseCoords.ToDrawingPoint();
         try
         {
-            Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Depot);
+            Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Post);
             var drawingCoords = _canvasManager.ToDrawingCoordinates(worldMouseCoords);
             _canvasManager.AddUiElement(new Ellipse(new Size(10, 10), drawingCoords.Move(-5/2, -5/2).ToDrawingPoint(), Brushes.Red), "objects", p.GetName());
             _canvasManager.UpdateCanvas();

@@ -29,6 +29,12 @@ public class ControlRoom : IControlPlace
     {
         return _name;
     }
+    public OrganisationObjectType Type => OrganisationObjectType.Control;
+    public event EventHandler? OnPropertyChanged;
+    public void RaisePropertyChanged()
+    {
+        OnPropertyChanged?.Invoke(this, EventArgs.Empty);
+    }
 }
 
 public class LCS : IControlPlace
@@ -90,5 +96,11 @@ public class LCS : IControlPlace
     public void SetWorld(World world)
     {
         _world = world;
+    }
+    public OrganisationObjectType Type => OrganisationObjectType.Control;
+    public event EventHandler? OnPropertyChanged;
+    private void RaisePropertyChanged()
+    {
+        OnPropertyChanged?.Invoke(this, EventArgs.Empty);
     }
 }

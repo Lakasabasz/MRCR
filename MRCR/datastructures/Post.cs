@@ -14,18 +14,12 @@ public enum PostType
 }
 public class Post: IOrganizationStructure
 {
-    public event EventHandler OnPostChanged;
-    protected void RaiseOnPostChangedEvent()
-    {
-        OnPostChanged?.Invoke(this, EventArgs.Empty);
-    }
-
     private string Name
     {
         get => _name;
         set{
             _name = value;
-            RaiseOnPostChangedEvent();
+            RaisePropertyChanged();
         }
     }
     private Point Location
@@ -33,7 +27,7 @@ public class Post: IOrganizationStructure
         get => _location;
         set{
             _location = value;
-            RaiseOnPostChangedEvent();
+            RaisePropertyChanged();
         }
     }
 
@@ -139,5 +133,11 @@ public class Post: IOrganizationStructure
         _namelessCounterCombined = 0;
         _namelessCounterDepot = 0;
         _namelessCounterPost = 0;
+    }
+    public OrganisationObjectType Type => OrganisationObjectType.Post;
+    public event EventHandler? OnPropertyChanged;
+    private void RaisePropertyChanged()
+    {
+        OnPropertyChanged?.Invoke(this, EventArgs.Empty);
     }
 }

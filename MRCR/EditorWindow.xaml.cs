@@ -44,7 +44,8 @@ public partial class EditorWindow : Window
         
         _treeManagers = new()
         {
-            { "objectsTrails", new ObjectsTrailsTreeManager() },
+            { "objectsTrails", new ObjectsTrailsTreeManager(World, TreeSzlakPost) },
+            {"control", new ControlTreeManager(World, TreeLCS)}
         };
         
         CanvasMediator = new CanvasMediator();

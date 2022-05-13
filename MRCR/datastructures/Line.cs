@@ -71,4 +71,11 @@ public class Line : IOrganizationStructure
     {
         return trails.Any(trail => _trails.Contains(trail));
     }
+
+    public OrganisationObjectType Type => OrganisationObjectType.Line;
+    public event EventHandler? OnPropertyChanged;
+    private void RaisePropertyChanged()
+    {
+        OnPropertyChanged?.Invoke(this, EventArgs.Empty);
+    }
 }

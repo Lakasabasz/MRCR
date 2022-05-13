@@ -109,9 +109,9 @@ public class EditorWindowTests
         Assert.IsNotNull(sg.subgraphs);
 
         Assert.IsNotEmpty(editorWindow.TreeLCS.Items);
-        TreeViewItem? treeItemLCS = editorWindow.TreeLCS.Items[0] as TreeViewItem;
-        Assert.IsNotNull(treeItemLCS);
-        Assert.IsTrue(treeItemLCS.IsExpanded);
-        Assert.IsNotEmpty(treeItemLCS.Items);
+        TreeViewItem? treeItemControlRoom = editorWindow.TreeLCS.Items[0] as TreeViewItem;
+        Assert.IsNotNull(treeItemControlRoom);
+        Assert.IsEmpty(treeItemControlRoom.Items);
+        Assert.AreEqual("Posterunek 1", treeItemControlRoom.Header);
     }
 }

@@ -2,5 +2,5 @@
 
 public interface ITreeManager
 {
-    
+    void UpdateTree();
 }
