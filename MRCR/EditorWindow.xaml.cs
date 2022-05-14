@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using MRCR.datastructures;
 using MRCR.Editor;
+using MRCR.services;
 using PointFloat = System.Windows.Point;
 using PointInt = System.Drawing.Point;
 using SizeInt = System.Drawing.Size;
@@ -24,6 +25,8 @@ public enum EditorMode
 
 public partial class EditorWindow : Window
 {
+    internal static IMessageBoxService MessageBox = new MessageBoxService();
+    
     private const double InitialScale = 20;
     private ToolSetOrganizacja _toolSetOrganizacja;
     
@@ -68,24 +71,18 @@ public partial class EditorWindow : Window
         }
         catch (NotImplementedException)
         {
-            MessageBox.Show("Nie zaimplementowano tego typu akcji", "Nie zaimplementowano", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
         }
     }
 
-    private void CanvasOrganizationMap_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        PointFloat p = e.GetPosition(CanvasOrganizationMap);
-        p.X = Math.Round(p.X/InitialScale);
-        p.Y = Math.Round(p.Y/InitialScale);
-        State.Text = "LPM Down: " + p;
-    }
+    private void CanvasOrganizationMap_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { }
 
     private void CanvasOrganizationMap_OnMouseMove(object sender, MouseEventArgs e)
     {
         PointFloat p = e.GetPosition(CanvasOrganizationMap);
         p.X = Math.Round(p.X/InitialScale);
         p.Y = Math.Round(p.Y/InitialScale);
-        State.Text = "LPM " + " Move: " + p;
+        State.Text = p.ToString();
     }
 
     private void CanvasOrganizationMap_OnLoaded(object sender, RoutedEventArgs e)

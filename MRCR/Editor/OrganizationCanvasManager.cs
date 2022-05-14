@@ -10,6 +10,7 @@ using MRCR.datastructures;
 using Ellipse = MRCR.canvasdrawable.Ellipse;
 using PointFloat = System.Windows.Point;
 using PointInt = System.Drawing.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 using SizeInt = System.Drawing.Size;
 using SizeFloat = System.Windows.Size;
 

@@ -36,6 +36,14 @@ public class Ellipse: IDrawableProxy
         if (cartesian) return Math.Pow(_position.X - position.X, 2) + Math.Pow(_position.Y - position.Y, 2) <= tolerance;
         return Math.Abs(_position.X - position.X) + Math.Abs(_position.Y - position.Y) <= tolerance;
     }
-
+    public bool IsSelected
+    {
+        get => _ellipse.Stroke == Brushes.Transparent;
+        set
+        {
+            if (value) _ellipse.Stroke = Brushes.DodgerBlue;
+            else _ellipse.Stroke = Brushes.Transparent;
+        }
+    }
     public Shape GetDrawable() => _ellipse;
 }

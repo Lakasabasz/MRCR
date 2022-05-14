@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using MRCR.canvasdrawable;
 using MRCR.datastructures;
 using Size = System.Drawing.Size;
@@ -23,7 +25,8 @@ public class OrganizationCreatePostMediator : OrganizationCreatePostAbstract, IC
         {
             Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Post);
             var drawingCoords = _canvasManager.ToDrawingCoordinates(worldMouseCoords);
-            _canvasManager.AddUiElement(new Ellipse(new Size(10, 10), drawingCoords.Move(-5/2, -5/2).ToDrawingPoint(), Brushes.Red), "objects", p.GetName());
+            Brush br = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/MRCR;component/icons/add-train-post.png")));
+            _canvasManager.AddUiElement(new Rectangle(new Size(30, 30), drawingCoords.Move(-15, -15).ToDrawingPoint(), br), "objects", p.GetName());
             _canvasManager.UpdateCanvas();
         }
         catch (PostsCollisionException)

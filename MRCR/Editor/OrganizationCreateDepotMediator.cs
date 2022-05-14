@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using MRCR.canvasdrawable;
 using MRCR.datastructures;
 using Size = System.Drawing.Size;
@@ -22,7 +24,8 @@ public class OrganizationCreateDepotMediator : OrganizationCreatePostAbstract, I
         {
             Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Depot);
             var drawingCoords = _canvasManager.ToDrawingCoordinates(worldMouseCoords);
-            _canvasManager.AddUiElement(new Ellipse(new Size(10, 10), drawingCoords.Move(-5/2, -5/2).ToDrawingPoint(), Brushes.LightGreen), "objects", p.GetName());
+            Brush br = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/MRCR;component/icons/add-train-depot.png")));
+            _canvasManager.AddUiElement(new Rectangle(new Size(30, 30), drawingCoords.Move(-15, -15).ToDrawingPoint(), br), "objects", p.GetName());
             _canvasManager.UpdateCanvas();
         }
         catch (PostsCollisionException)
