@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -268,5 +269,24 @@ public class WorldDataStructuresTests
                 Assert.IsTrue(expectedSubgraphs[ns]);
             }
         }
+    }
+
+    [Test]
+    public void SelectionTest()
+    {
+        World world = new World("World");
+        world.RegisterDelegate(OrganisationObjectType.Post, OnPostChangedST);
+        Post p = world.AddPost(1, 2, PostType.Post);
+        ((ISelectionService<Post>) world.SelectionServices[OrganisationObjectType.Post]).Set(new List<Post> { p });
+        Assert.IsTrue(_opcst);
+    }
+    
+    private bool _opcst;
+    private void OnPostChangedST(object? sender, EventArgs args)
+    {
+        Post? senderPost = sender as Post;
+        Assert.IsNotNull(senderPost);
+        Assert.IsTrue(senderPost.IsSelected);
+        _opcst = true;
     }
 }

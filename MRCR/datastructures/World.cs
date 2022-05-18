@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Windows;
 using MRCR.datastructures.serializable;
+using MRCR.services;
 using Point = System.Drawing.Point;
 
 namespace MRCR.datastructures;
@@ -14,6 +15,8 @@ namespace MRCR.datastructures;
 public class World : IValidable
 {
     public event EventHandler<IOrganizationStructure> OnWorldStateChanged;
+    public Dictionary<OrganisationObjectType, ISelectionService> SelectionServices { get; private set; }
+
     protected void RaiseOnStateChanged(IOrganizationStructure structure)
     {
         OnWorldStateChanged?.Invoke(this, structure);
@@ -40,6 +43,10 @@ public class World : IValidable
             { OrganisationObjectType.Post, new List<EventHandler>() },
             { OrganisationObjectType.Trail, new List<EventHandler>() },
         };
+        SelectionServices = new Dictionary<OrganisationObjectType, ISelectionService>
+        {
+            { OrganisationObjectType.Post, new ObjectsSelectionService() },
+        };
     }
     private World(string name, List<Post> posts, List<Trail> trails, List<Line> lines, List<IControlPlace> controlPlaces)
     {
@@ -58,6 +65,10 @@ public class World : IValidable
         foreach (Trail trail in trails) _neighborsMatrix[trail.GetPosts()[0], trail.GetPosts()[1]] = trail;
         foreach (var line in _lines) line.SetWorld(this);
         foreach (var controlPlace in _controlPlaces) if(controlPlace is LCS lcs) lcs.SetWorld(this);
+        SelectionServices = new Dictionary<OrganisationObjectType, ISelectionService>
+        {
+            { OrganisationObjectType.Post, new ObjectsSelectionService() },
+        };
     }
     public static World Load(string worldPath)
     {

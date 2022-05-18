@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using MRCR.datastructures;
 using MRCR.Editor;
@@ -42,7 +43,7 @@ public partial class EditorWindow : Window
         ContentToolBar.Content = _toolSetOrganizacja = new ToolSetOrganizacja();
         _canvasManagers = new()
         {
-            { EditorMode.Organization, new OrganizationCanvasManager(CanvasOrganizationMap, InitialScale)}
+            { EditorMode.Organization, new OrganizationCanvasManager(CanvasOrganizationMap, InitialScale, World)}
         };
         
         _treeManagers = new()
@@ -101,5 +102,10 @@ public partial class EditorWindow : Window
     {
         GenerateOrganizationMapGrid(e.NewSize);
         _canvasManagers[EditorMode.Organization].UpdateCanvas();
+    }
+
+    private void TreeSzlakPost_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+        _treeManagers["objectsTrails"].UpdateSelection(e.OldValue as TreeViewItem, e.NewValue as TreeViewItem);
     }
 }

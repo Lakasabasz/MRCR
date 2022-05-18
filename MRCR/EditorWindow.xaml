@@ -30,7 +30,7 @@
                 </TabControl.Resources>
                 <TabItem Name="TiTreeSzlakPost" Header="Szkalki/posterunki">
                     <TabItem.Content>
-                        <TreeView Name="TreeSzlakPost"/>
+                        <TreeView Name="TreeSzlakPost" SelectedItemChanged="TreeSzlakPost_OnSelectedItemChanged"/>
                     </TabItem.Content>
                 </TabItem>
                 <TabItem Name="TiTreeLines" Header="Linie">

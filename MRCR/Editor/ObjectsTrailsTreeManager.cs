@@ -29,10 +29,7 @@ class ObjectsTrailsTreeManager : ITreeManager
         _treeView = treeView;
     }
 
-    private void OnObjectsAndTrailsChanged(object? sender, EventArgs e)
-    {
-        MessageBox.Show("Object or Trail changed");
-    }
+    private void OnObjectsAndTrailsChanged(object? sender, EventArgs e){ }
     
     private void OnWorldStateChanged(object? sender, IOrganizationStructure e)
     {
@@ -67,5 +64,20 @@ class ObjectsTrailsTreeManager : ITreeManager
             }
             _treeView.Items.Add(postTvi);
         }
+    }
+
+    public void UpdateSelection(TreeViewItem old, TreeViewItem newer)
+    {
+        Post? p = null;
+        foreach (var (key, value) in _treeItemsRoot)
+        {
+            if(value.TreeViewItem == newer)
+            {
+                p = key;
+                break;
+            }
+        }
+        if (p == null) return;
+        ((ISelectionService<Post>)_world.SelectionServices[OrganisationObjectType.Post]).Set(new List<Post>{p});
     }
 }

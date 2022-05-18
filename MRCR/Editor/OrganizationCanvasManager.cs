@@ -21,11 +21,15 @@ public class OrganizationCanvasManager : ICanvasManager
     private Canvas _canvas;
     private Dictionary<string, SwitchableCategory<NameableIDrawableProxy>> _canvasDrawables;
     private double _scale;
-    public OrganizationCanvasManager(Canvas canvasOrganizationMap, double scale)
+    public OrganizationCanvasManager(Canvas canvasOrganizationMap, double scale, World world)
     {
         _canvas = canvasOrganizationMap;
         _canvasDrawables = new();
         _scale = scale;
+        world.RegisterDelegate(OrganisationObjectType.Post, OnObjectChanged);
+        world.RegisterDelegate(OrganisationObjectType.Trail, OnObjectChanged);
+        world.RegisterDelegate(OrganisationObjectType.Line, OnObjectChanged);
+        world.RegisterDelegate(OrganisationObjectType.Control, OnObjectChanged);
     }
 
     public void AddUiElement(IDrawableProxy element, string category, string? name)
@@ -58,7 +62,7 @@ public class OrganizationCanvasManager : ICanvasManager
 
     public void EnableCategory(string category)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public List<NameableIDrawableProxy> GetCategory(string category)
@@ -112,6 +116,17 @@ public class OrganizationCanvasManager : ICanvasManager
                 if (i % spacing == 0 && j % spacing == 0) brush = Brushes.Gray;
                 Ellipse dot = new Ellipse(new SizeInt(2, 2), new PointInt(i, j), brush, scale);
                 gridDots.Add(new NameableIDrawableProxy(dot, null));
+            }
+        }
+    }
+
+    public void OnObjectChanged(object? sender, EventArgs eventArgs)
+    {
+        if (sender is Post p)
+        {
+            foreach (var (item1, item2) in _canvasDrawables["objects"].Item1)
+            {
+                if (item2 == p.GetName()) item1.IsSelected = p.IsSelected;
             }
         }
     }

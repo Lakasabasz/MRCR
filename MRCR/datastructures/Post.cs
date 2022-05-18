@@ -135,6 +135,17 @@ public class Post: IOrganizationStructure
         _namelessCounterPost = 0;
     }
     public OrganisationObjectType Type => OrganisationObjectType.Post;
+    
+    public bool IsSelected { 
+        get => _isSelected;
+        set
+        {
+            _isSelected = value;
+            RaisePropertyChanged();
+        }
+    }
+    private bool _isSelected;
+
     public event EventHandler? OnPropertyChanged;
     private void RaisePropertyChanged()
     {

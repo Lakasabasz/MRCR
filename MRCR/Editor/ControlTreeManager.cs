@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using Accessibility;
 using MRCR.datastructures;
 
 namespace MRCR.Editor;
@@ -73,5 +72,10 @@ public class ControlTreeManager : ITreeManager
             foreach (CtmPostBranch cpb in value.ctmPostBranches) tvi.Items.Add(cpb.tvi);
             _treeView.Items.Add(tvi);
         }
+    }
+
+    public void UpdateSelection(TreeViewItem old, TreeViewItem newer)
+    {
+        throw new NotImplementedException();
     }
 }
