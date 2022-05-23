@@ -74,7 +74,6 @@ public partial class EditorWindow : Window
         }
         catch (NotImplementedException)
         {
-            throw;
             MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
         }
     }
@@ -90,7 +89,6 @@ public partial class EditorWindow : Window
         }
         catch (NotImplementedException)
         {
-            throw;
             MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
         }
     }
@@ -107,7 +105,6 @@ public partial class EditorWindow : Window
         }
         catch (NotImplementedException)
         {
-            throw;
             MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
         }
     }
