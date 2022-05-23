@@ -59,6 +59,8 @@ public partial class EditorWindow : Window
             EditorMode.Organization, ActionType.CREATE_DEPOT, new OrganizationCreateDepotMediator(World, _canvasManagers[EditorMode.Organization]));
         CanvasMediator.Register(
             EditorMode.Organization, ActionType.CREATE_STATION, new OrganizationCreateStationMediator(World, _canvasManagers[EditorMode.Organization]));
+        CanvasMediator.Register(
+            EditorMode.Organization, ActionType.SELECT_OBJECT, new OrganizationSelectObjectMediator(_canvasManagers[EditorMode.Organization], World));
     }
 
     private void CanvasOrganizationMap_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -68,22 +70,46 @@ public partial class EditorWindow : Window
         try
         {
             CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
-                .ButtonRelease(new UnifiedPoint(Math.Round(p.X/InitialScale), Math.Round(p.Y/InitialScale)));
+                .ButtonRelease(new UnifiedPoint(p.X, p.Y, CoordinatesMode.Drawing));
         }
         catch (NotImplementedException)
         {
+            throw;
             MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
         }
     }
 
-    private void CanvasOrganizationMap_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { }
+    private void CanvasOrganizationMap_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        PointFloat p = e.GetPosition(CanvasOrganizationMap);
+        State.Text = "LPM Down: " + p;
+        try
+        {
+            CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
+                .ButtonPress(new UnifiedPoint(p.X, p.Y, CoordinatesMode.Drawing));
+        }
+        catch (NotImplementedException)
+        {
+            throw;
+            MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
+        }
+    }
 
     private void CanvasOrganizationMap_OnMouseMove(object sender, MouseEventArgs e)
     {
         PointFloat p = e.GetPosition(CanvasOrganizationMap);
-        p.X = Math.Round(p.X/InitialScale);
-        p.Y = Math.Round(p.Y/InitialScale);
-        State.Text = p.ToString();
+
+        State.Text = "Move: " + p;
+        try
+        {
+            CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
+                .MouseMove(new UnifiedPoint(p.X, p.Y, CoordinatesMode.Drawing), e);
+        }
+        catch (NotImplementedException)
+        {
+            throw;
+            MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
+        }
     }
 
     private void CanvasOrganizationMap_OnLoaded(object sender, RoutedEventArgs e)

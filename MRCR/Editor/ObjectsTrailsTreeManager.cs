@@ -29,7 +29,12 @@ class ObjectsTrailsTreeManager : ITreeManager
         _treeView = treeView;
     }
 
-    private void OnObjectsAndTrailsChanged(object? sender, EventArgs e){ }
+    private void OnObjectsAndTrailsChanged(object? sender, EventArgs e)
+    {
+        // if (sender is not Post p) return; 
+        // _treeItemsRoot[p].TreeViewItem.IsSelected = p.IsSelected;
+        // _treeItemsRoot[p].TreeViewItem.Header = p.GetName();
+    }
     
     private void OnWorldStateChanged(object? sender, IOrganizationStructure e)
     {

@@ -145,6 +145,8 @@ public class Post: IOrganizationStructure
         }
     }
     private bool _isSelected;
+    
+    public PostType PostType => _type;
 
     public event EventHandler? OnPropertyChanged;
     private void RaisePropertyChanged()

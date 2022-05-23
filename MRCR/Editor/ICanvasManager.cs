@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Input;
 using MRCR.canvasdrawable;
 using MRCR.datastructures;
 
@@ -23,6 +24,7 @@ class SwitchableCategory<T> : Tuple<List<T>>
 
 public interface ICanvasManager
 {
+    double Scale { get; set; }
     void AddUiElement(IDrawableProxy element, string category, string? name);
     void RemoveUiElement(string category, string name);
     void ClearCategory(string category);
@@ -31,4 +33,6 @@ public interface ICanvasManager
     List<NameableIDrawableProxy> GetCategory(string category);
     void UpdateCanvas();
     UnifiedPoint ToDrawingCoordinates(UnifiedPoint point);
+    UnifiedPoint ToUniform(MouseButtonEventArgs args);
+    List<NameableIDrawableProxy> GetOverlappingObjects(IDrawableProxy positionedObject, string? category = null);
 }

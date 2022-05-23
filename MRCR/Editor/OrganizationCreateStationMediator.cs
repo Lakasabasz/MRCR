@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MRCR.canvasdrawable;
@@ -12,25 +13,22 @@ public class OrganizationCreateStationMediator: OrganizationCreatePostAbstract, 
 {
     public OrganizationCreateStationMediator(World world, ICanvasManager canvasManager) : base(world, canvasManager) { }
 
-    public void ButtonPress(UnifiedPoint worldMouseCoords)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void ButtonPress(UnifiedPoint worldMouseCoords){}
 
-    public void ButtonRelease(UnifiedPoint worldMouseCoords)
+    public void ButtonRelease(UnifiedPoint mouseCoords)
     {
-        var mouseCords = worldMouseCoords.ToDrawingPoint();
+        mouseCoords.Convert(CoordinatesMode.World, _canvasManager.Scale);
+        mouseCoords.X = Math.Round(mouseCoords.X);
+        mouseCoords.Y = Math.Round(mouseCoords.Y);
         try
         {
-            Post p = _world.AddPost(mouseCords.X, mouseCords.Y, PostType.Combined);
-            var drawingCoords = _canvasManager.ToDrawingCoordinates(worldMouseCoords);
-            Brush br = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/MRCR;component/icons/add-train-station.png")));
-            _canvasManager.AddUiElement(new Rectangle(new Size(30, 30), drawingCoords.Move(-15, -15).ToDrawingPoint(), br), "objects", p.GetName());
-            _canvasManager.UpdateCanvas();
+            Post p = _world.AddPost((int)mouseCoords.X, (int)mouseCoords.Y, PostType.Combined);
         }
         catch (PostsCollisionException)
         {
             MessageBox.Show("2 posterunki nie mogą być w tym samym miejscu", "Błąd dodawania posterunku", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
+    public void MouseMove(UnifiedPoint worldMouseCoords, MouseEventArgs? _){}
 }

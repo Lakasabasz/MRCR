@@ -341,4 +341,14 @@ public class World : IValidable
     
     public void RegisterDelegate(OrganisationObjectType type, EventHandler del)
                                 => _onDataChangedPropagateHandlers[type].Add(del);
+
+    public Post? GetPost(string? postName)
+    {
+        if(postName == null) return null;
+        foreach(Post p in _posts)
+        {
+            if(p.GetName() == postName) return p;
+        }
+        return null;
+    }
 }
