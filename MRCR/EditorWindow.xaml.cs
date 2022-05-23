@@ -103,10 +103,7 @@ public partial class EditorWindow : Window
             CanvasMediator.Mediate(EditorMode.Organization, _toolSetOrganizacja.CurrentActionType)
                 .MouseMove(new UnifiedPoint(p.X, p.Y, CoordinatesMode.Drawing), e);
         }
-        catch (NotImplementedException)
-        {
-            MessageBox.Show("Nie zaimplementowano tej akcji", "Nie zaimplementowano", MessageMode.Error);
-        }
+        catch (NotImplementedException){ }
     }
 
     private void CanvasOrganizationMap_OnLoaded(object sender, RoutedEventArgs e)
